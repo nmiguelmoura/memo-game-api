@@ -31,6 +31,7 @@ class Game_form(messages.Message):
     move_record = messages.IntegerField(5, repeated=True)
     score = messages.IntegerField(6)
     creation_date = messages.FloatField(7)
+    web_safe_key = messages.StringField(8)
 
 
 class String_message(messages.Message):

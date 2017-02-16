@@ -12,8 +12,10 @@ class Create_game():
     def copy_game_to_form(self, game):
         game_pf = Game_form()
         for field in game_pf.all_fields():
-            if(game, field.name):
+            if hasattr(game, field.name):
                 setattr(game_pf, field.name, getattr(game, field.name))
+            elif field.name == "web_safe_key":
+                setattr(game_pf, field.name, game.key.urlsafe())
         game_pf.check_initialized()
         return game_pf
 
