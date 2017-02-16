@@ -3,21 +3,12 @@ from random import shuffle
 import time
 from models import Game, Game_form, User
 from google.appengine.ext import ndb
+from copy_to_forms import copy_game_to_form
 
 
 class Create_game():
     def __init__(self):
         pass
-
-    def copy_game_to_form(self, game):
-        game_pf = Game_form()
-        for field in game_pf.all_fields():
-            if hasattr(game, field.name):
-                setattr(game_pf, field.name, getattr(game, field.name))
-            elif field.name == "web_safe_key":
-                setattr(game_pf, field.name, game.key.urlsafe())
-        game_pf.check_initialized()
-        return game_pf
 
     def get_random_tiles(self, level):
         result = []
@@ -72,7 +63,7 @@ class Create_game():
 
         game.put()
 
-        return self.copy_game_to_form(game)
+        return copy_game_to_form(game)
 
 
 

@@ -1,6 +1,7 @@
 import endpoints
 from models import User, User_profile_form, String_message
 from google.appengine.ext import ndb
+from copy_to_forms import copy_user_profile_to_form
 
 class User_handler():
     def __init__(self):
@@ -8,15 +9,6 @@ class User_handler():
 
     def get_user_id(self, user):
         return user.email()
-
-    def copy_user_profile_to_form(self, user_profile):
-        usr_pf = User_profile_form()
-        for field in usr_pf.all_fields():
-            if(user_profile, field.name):
-                setattr(usr_pf, field.name, getattr(user_profile, field.name))
-
-        usr_pf.check_initialized()
-        return usr_pf
 
     def check_if_user_exists(self, user):
         user_id = self.get_user_id(user)
@@ -30,7 +22,7 @@ class User_handler():
                 email=user.email()
             )
             user_profile.put()
-        return self.copy_user_profile_to_form(user_profile)
+        return copy_user_profile_to_form(user_profile)
 
     def handle_user(self):
         user = endpoints.get_current_user()
