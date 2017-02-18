@@ -1,7 +1,7 @@
 import endpoints
 from protorpc import remote, messages, message_types
 from models import User_profile_form, Game_form, Game_list_forms, Move_form, \
-    Score_forms, String_message
+    Score_forms, History_form, String_message
 
 from settings import WEB_CLIENT_ID
 
@@ -11,6 +11,7 @@ import get_game
 import get_game_list
 import make_move
 import score_list
+import history_handler
 
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
@@ -39,6 +40,7 @@ get_g = get_game.Get_game()
 get_g_list = get_game_list.Get_game_list()
 mk_move = make_move.Make_move_handler()
 score_l = score_list.Score_list_handler()
+history_h = history_handler.History_handler()
 
 
 @endpoints.api(name="memo_game",
@@ -110,6 +112,14 @@ class Memo_game_API(remote.Service):
                       http_method='GET')
     def score(self, request):
         return score_l.score_list_handler(request)
+
+    @endpoints.method(request_message=REQUEST_GET_EXISTING_GAME,
+                      response_message=History_form,
+                      path='history/{web_safe_key}',
+                      name='get_game_history',
+                      http_method='GET')
+    def history(self, request):
+        return history_h.history_handler(request)
 
 
 api = endpoints.api_server([Memo_game_API])

@@ -72,3 +72,6 @@ class Score_form(messages.Message):
 
 class Score_forms(messages.Message):
     items = messages.MessageField(Score_form, 1, repeated=True)
+
+class History_form(messages.Message):
+    history = messages.BytesField(1)

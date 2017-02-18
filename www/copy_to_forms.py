@@ -1,5 +1,5 @@
 from models import Game_form, Game_list_form, Move_form, Score_form, \
-    User_profile_form
+    History_form, User_profile_form
 
 
 def copy_user_profile_to_form(user_profile):
@@ -56,3 +56,11 @@ def copy_score_list_to_form(score):
 
     score_f.check_initialized()
     return score_f
+
+def copy_history_to_form(json):
+    # Following an aproach as seen in
+    # http://stackoverflow.com/questions/13576140/protorpc-returning-dict
+    hist_f = History_form()
+    setattr(hist_f, 'history', json)
+    hist_f.check_initialized()
+    return hist_f
