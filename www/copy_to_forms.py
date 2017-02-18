@@ -1,4 +1,5 @@
-from models import Game_form, Game_list_form, Move_form, User_profile_form
+from models import Game_form, Game_list_form, Move_form, Score_form, \
+    User_profile_form
 
 
 def copy_user_profile_to_form(user_profile):
@@ -42,3 +43,16 @@ def copy_move_result_to_form(game, move_one_key, move_two_key, guessed):
     setattr(move_f, 'move_two_key', move_two_key)
     move_f.check_initialized()
     return move_f
+
+
+def copy_score_list_to_form(score):
+    score_f = Score_form()
+    for field in score_f.all_fields():
+        if hasattr(score, field.name):
+            setattr(score_f, field.name, getattr(score, field.name))
+        elif field.name == 'user_name':
+            user_name = score.user.get().name
+            setattr(score_f, field.name, user_name)
+
+    score_f.check_initialized()
+    return score_f

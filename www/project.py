@@ -1,7 +1,7 @@
 import endpoints
 from protorpc import remote, messages, message_types
 from models import User_profile_form, Game_form, Game_list_forms, Move_form, \
-    String_message
+    Score_forms, String_message
 
 from settings import WEB_CLIENT_ID
 
@@ -10,6 +10,7 @@ import create_game
 import get_game
 import get_game_list
 import make_move
+import score_list
 
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
@@ -30,11 +31,14 @@ REQUEST_MOVE = endpoints.ResourceContainer(
     move_two=messages.IntegerField(3)
 )
 
+REQUEST_SCORE = endpoints.ResourceContainer(list_length=messages.IntegerField(1))
+
 user_h = user_handler.User_handler()
 new_game = create_game.Create_game()
 get_g = get_game.Get_game()
 get_g_list = get_game_list.Get_game_list()
 mk_move = make_move.Make_move_handler()
+score_l = score_list.Score_list_handler()
 
 
 @endpoints.api(name="memo_game",
@@ -89,6 +93,7 @@ class Memo_game_API(remote.Service):
     def get_complete_games(self, request):
         return get_g_list.get_list_handler(request, True)
 
+    # Make a move
     @endpoints.method(request_message=REQUEST_MOVE,
                       response_message=Move_form,
                       path='move/{web_safe_key}',
@@ -96,6 +101,13 @@ class Memo_game_API(remote.Service):
                       name='move')
     def move(self, request):
         return mk_move.move_handler(request)
+
+    # Get top ten score list
+    @endpoints.method(request_message=REQUEST_SCORE,
+                      response_message=Score_forms,
+                      path='score/{list_length}')
+    def score(self, request):
+        return score_l.score_list_handler(request)
 
 
 api = endpoints.api_server([Memo_game_API])

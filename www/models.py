@@ -25,6 +25,12 @@ class Game(ndb.Model):
     creation_date = ndb.FloatProperty()
 
 
+class Score(ndb.Model):
+    user = ndb.KeyProperty(required=True, kind='User')
+    score = ndb.IntegerProperty(required=True)
+    total_moves = ndb.IntegerProperty(required=True)
+
+
 class Game_form(messages.Message):
     user_id = messages.StringField(1)
     level = messages.StringField(2)
@@ -58,3 +64,13 @@ class Move_form(messages.Message):
     guessed = messages.BooleanField(3)
     score = messages.IntegerField(4)
     complete = messages.BooleanField(5)
+
+
+class Score_form(messages.Message):
+    user_name = messages.StringField(1)
+    score = messages.IntegerField(2)
+    total_moves = messages.IntegerField(3)
+
+
+class Score_forms(messages.Message):
+    items = messages.MessageField(Score_form, 1, repeated=True)

@@ -1,6 +1,7 @@
 import endpoints
 from copy_to_forms import copy_move_result_to_form
 from google.appengine.ext import ndb
+from models import User, Score
 
 class Make_move_handler():
     def __init__(self):
@@ -51,6 +52,7 @@ class Make_move_handler():
         guessed = False
 
         if move_one_key != -1 and move_two_key != -1:
+            complete = None
             if move_one_key == move_two_key:
                 guessed = True
                 score = score + 3
@@ -78,5 +80,13 @@ class Make_move_handler():
             game.score = score
             game.put()
 
+
+            if complete:
+                score = Score(
+                    user=ndb.Key(User, user.email()),
+                    score=score,
+                    total_moves=len(move_record) / 2
+                )
+                score.put()
 
         return copy_move_result_to_form(game, move_one_key, move_two_key, guessed)
