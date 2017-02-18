@@ -79,7 +79,7 @@ class Memo_game_API(remote.Service):
     @endpoints.method(request_message=message_types.VoidMessage,
                       response_message=Game_list_forms,
                       path='active_games',
-                      name='active_games',
+                      name='get_user_games',
                       http_method='GET')
     def get_active_games(self, request):
         return get_g_list.get_list_handler(request, False)
@@ -87,8 +87,8 @@ class Memo_game_API(remote.Service):
     # Get list of games created by user that are complete
     @endpoints.method(request_message=message_types.VoidMessage,
                       response_message=Game_list_forms,
-                      path='complete_games',
-                      name='complete_games',
+                      path='get_user_complete_games',
+                      name='get_user_complete_games',
                       http_method='GET')
     def get_complete_games(self, request):
         return get_g_list.get_list_handler(request, True)
@@ -105,7 +105,9 @@ class Memo_game_API(remote.Service):
     # Get top ten score list
     @endpoints.method(request_message=REQUEST_SCORE,
                       response_message=Score_forms,
-                      path='score/{list_length}')
+                      path='score/{list_length}',
+                      name='get_high_scores',
+                      http_method='GET')
     def score(self, request):
         return score_l.score_list_handler(request)
 

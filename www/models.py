@@ -35,13 +35,11 @@ class Game_form(messages.Message):
     user_id = messages.StringField(1)
     level = messages.StringField(2)
     tile_number = messages.IntegerField(3)
-    sequence = messages.IntegerField(4, repeated=True)
-    tiles_found = messages.IntegerField(5, repeated=True)
-    move_record = messages.IntegerField(6, repeated=True)
-    score = messages.IntegerField(7)
-    complete = messages.BooleanField(8)
-    creation_date = messages.FloatField(9)
-    web_safe_key = messages.StringField(10)
+    tiles_found = messages.IntegerField(4, repeated=True)
+    score = messages.IntegerField(5)
+    complete = messages.BooleanField(6)
+    creation_date = messages.FloatField(7)
+    web_safe_key = messages.StringField(8)
 
 
 class Game_list_form(messages.Message):
