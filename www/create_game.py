@@ -67,6 +67,7 @@ class Create_game():
             tiles_found=tiles_found,
             move_record=move_record,
             score=score,
+            complete=False,
             creation_date=creation_date
         )
 

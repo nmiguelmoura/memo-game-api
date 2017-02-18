@@ -21,6 +21,7 @@ class Game(ndb.Model):
     tiles_found = ndb.IntegerProperty(repeated=True)
     move_record = ndb.IntegerProperty(repeated=True)
     score = ndb.IntegerProperty()
+    complete = ndb.BooleanProperty()
     creation_date = ndb.FloatProperty()
 
 
@@ -32,8 +33,9 @@ class Game_form(messages.Message):
     tiles_found = messages.IntegerField(5, repeated=True)
     move_record = messages.IntegerField(6, repeated=True)
     score = messages.IntegerField(7)
-    creation_date = messages.FloatField(8)
-    web_safe_key = messages.StringField(9)
+    complete = messages.BooleanField(8)
+    creation_date = messages.FloatField(9)
+    web_safe_key = messages.StringField(10)
 
 
 class String_message(messages.Message):
