@@ -1,4 +1,4 @@
-from models import Game_form, Game_list_form, User_profile_form
+from models import Game_form, Game_list_form, Move_form, User_profile_form
 
 
 def copy_user_profile_to_form(user_profile):
@@ -21,6 +21,7 @@ def copy_game_to_form(game):
     game_pf.check_initialized()
     return game_pf
 
+
 def copy_game_from_list_to_form(game):
     game_l_pf = Game_list_form()
     for field in game_l_pf.all_fields():
@@ -30,3 +31,14 @@ def copy_game_from_list_to_form(game):
             setattr(game_l_pf, field.name, game.key.urlsafe())
     game_l_pf.check_initialized()
     return game_l_pf
+
+
+def copy_move_result_to_form(game, move_one_key, move_two_key, guessed):
+    move_f = Move_form()
+    setattr(move_f, 'score', game.score)
+    setattr(move_f, 'complete', game.complete)
+    setattr(move_f, 'guessed', guessed)
+    setattr(move_f, 'move_one_key', move_one_key)
+    setattr(move_f, 'move_two_key', move_two_key)
+    move_f.check_initialized()
+    return move_f

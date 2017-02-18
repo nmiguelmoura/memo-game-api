@@ -51,3 +51,10 @@ class Game_list_forms(messages.Message):
 
 class String_message(messages.Message):
     message = messages.StringField(1, required=True)
+
+class Move_form(messages.Message):
+    move_one_key = messages.IntegerField(1)
+    move_two_key = messages.IntegerField(2)
+    guessed = messages.BooleanField(3)
+    score = messages.IntegerField(4)
+    complete = messages.BooleanField(5)

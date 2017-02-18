@@ -1,6 +1,7 @@
 import endpoints
 from protorpc import remote, messages, message_types
-from models import User_profile_form, Game_form, Game_list_forms, String_message
+from models import User_profile_form, Game_form, Game_list_forms, Move_form, \
+    String_message
 
 from settings import WEB_CLIENT_ID
 
@@ -8,6 +9,7 @@ import user_handler
 import create_game
 import get_game
 import get_game_list
+import make_move
 
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
@@ -22,10 +24,17 @@ REQUEST_NEW_GAME = endpoints.ResourceContainer(level=messages.StringField(1))
 REQUEST_GET_EXISTING_GAME = endpoints.ResourceContainer(
     web_safe_key=messages.StringField(1))
 
+REQUEST_MOVE = endpoints.ResourceContainer(
+    web_safe_key=messages.StringField(1),
+    move_one=messages.IntegerField(2),
+    move_two=messages.IntegerField(3)
+)
+
 user_h = user_handler.User_handler()
 new_game = create_game.Create_game()
 get_g = get_game.Get_game()
 get_g_list = get_game_list.Get_game_list()
+mk_move = make_move.Make_move_handler()
 
 
 @endpoints.api(name="memo_game",
@@ -79,6 +88,14 @@ class Memo_game_API(remote.Service):
                       http_method='GET')
     def get_complete_games(self, request):
         return get_g_list.get_list_handler(request, True)
+
+    @endpoints.method(request_message=REQUEST_MOVE,
+                      response_message=Move_form,
+                      path='move/{web_safe_key}',
+                      http_method='PUT',
+                      name='move')
+    def move(self, request):
+        return mk_move.move_handler(request)
 
 
 api = endpoints.api_server([Memo_game_API])
