@@ -1,12 +1,13 @@
 import endpoints
-from protorpc import remote, messages
-from models import User_profile_form, Game_form, String_message
+from protorpc import remote, messages, message_types
+from models import User_profile_form, Game_form, Game_list_forms, String_message
 
 from settings import WEB_CLIENT_ID
 
 import user_handler
 import create_game
 import get_game
+import get_game_list
 
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
@@ -18,11 +19,14 @@ REQUEST_USER = endpoints.ResourceContainer(name=messages.StringField(1),
 
 REQUEST_NEW_GAME = endpoints.ResourceContainer(level=messages.StringField(1))
 
-REQUEST_GET_EXISTING_GAME = endpoints.ResourceContainer(web_safe_key=messages.StringField(1))
+REQUEST_GET_EXISTING_GAME = endpoints.ResourceContainer(
+    web_safe_key=messages.StringField(1))
 
 user_h = user_handler.User_handler()
 new_game = create_game.Create_game()
 get_g = get_game.Get_game()
+get_g_list = get_game_list.Get_game_list()
+
 
 @endpoints.api(name="memo_game",
                version="v1",
@@ -57,6 +61,24 @@ class Memo_game_API(remote.Service):
                       http_method='GET')
     def get_existing_game(self, request):
         return get_g.get_game_handler(request)
+
+    # Get list of games created by user that are not complete
+    @endpoints.method(request_message=message_types.VoidMessage,
+                      response_message=Game_list_forms,
+                      path='active_games',
+                      name='active_games',
+                      http_method='GET')
+    def get_active_games(self, request):
+        return get_g_list.get_list_handler(request, False)
+
+    # Get list of games created by user that are complete
+    @endpoints.method(request_message=message_types.VoidMessage,
+                      response_message=Game_list_forms,
+                      path='complete_games',
+                      name='complete_games',
+                      http_method='GET')
+    def get_complete_games(self, request):
+        return get_g_list.get_list_handler(request, True)
 
 
 api = endpoints.api_server([Memo_game_API])

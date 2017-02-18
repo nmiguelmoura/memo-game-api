@@ -38,5 +38,16 @@ class Game_form(messages.Message):
     web_safe_key = messages.StringField(10)
 
 
+class Game_list_form(messages.Message):
+    user_id = messages.StringField(1)
+    complete = messages.BooleanField(2)
+    score = messages.IntegerField(3)
+    creation_date = messages.FloatField(4)
+    web_safe_key = messages.StringField(5)
+
+class Game_list_forms(messages.Message):
+    items = messages.MessageField(Game_list_form, 1, repeated=True)
+
+
 class String_message(messages.Message):
     message = messages.StringField(1, required=True)
