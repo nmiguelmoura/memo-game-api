@@ -1,7 +1,7 @@
 import endpoints
 from random import shuffle
 import time
-from models import Game, Game_form, User
+from models import Game, User
 from google.appengine.ext import ndb
 from copy_to_forms import copy_game_to_form
 
@@ -11,7 +11,8 @@ class Create_game():
         pass
 
     def get_random_tiles(self, level):
-        result = []
+        sequence = []
+        found = []
         limit = None
 
         if level == 'easy':
@@ -20,14 +21,23 @@ class Create_game():
             limit = 8
         elif level == 'hard':
             limit = 12
+        else:
+            level = 'easy'
+            limit = 5
 
         for i in range(0, limit):
-            result.append(i)
-            result.append(i)
+            sequence.append(i)
+            sequence.append(i)
+            found.append(-1)
+            found.append(-1)
 
-        shuffle(result)
+        shuffle(sequence)
 
-        return result
+        return {
+            "level": level,
+            "sequence": sequence,
+            "found": found
+        }
 
 
     def create_new_game(self, request):
@@ -35,17 +45,15 @@ class Create_game():
         if not user:
             raise endpoints.UnauthorizedException('Authentication required.')
 
-        if not request.level:
-            raise endpoints.UnauthorizedException('Level not selected.')
-
         user_id = user.email()
         u_key = ndb.Key(User, user_id)
         game_id = Game.allocate_ids(size=1, parent=u_key)[0]
         game_key = ndb.Key(Game, game_id, parent=u_key)
 
-        level = request.level
-        sequence = self.get_random_tiles(level)
-        tiles_found = []
+        random = self.get_random_tiles(request.level)
+        level = random['level']
+        sequence = random['sequence']
+        tiles_found = random['found']
         move_record = []
         score = 0
         creation_date = time.time()
@@ -54,6 +62,7 @@ class Create_game():
             key=game_key,
             user_id=user_id,
             level=level,
+            tile_number=len(sequence),
             sequence=sequence,
             tiles_found=tiles_found,
             move_record=move_record,

@@ -14,7 +14,7 @@ def copy_user_profile_to_form(user_profile):
 def copy_game_to_form(game):
     game_pf = Game_form()
     for field in game_pf.all_fields():
-        if hasattr(game, field.name):
+        if hasattr(game, field.name) and field.name != 'sequence':
             setattr(game_pf, field.name, getattr(game, field.name))
         elif field.name == "web_safe_key":
             setattr(game_pf, field.name, game.key.urlsafe())
