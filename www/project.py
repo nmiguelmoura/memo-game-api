@@ -12,19 +12,25 @@ import get_game_list
 import make_move
 import score_list
 import history_handler
+import cancel_handler
 
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
 
 # -------------- REQUEST MESSAGES -----------------#
 
-REQUEST_USER = endpoints.ResourceContainer(name=messages.StringField(1),
-                                           email=messages.StringField(2))
+REQUEST_USER = endpoints.ResourceContainer(
+    name=messages.StringField(1),
+    email=messages.StringField(2)
+)
 
-REQUEST_NEW_GAME = endpoints.ResourceContainer(level=messages.StringField(1))
+REQUEST_NEW_GAME = endpoints.ResourceContainer(
+    level=messages.StringField(1)
+)
 
 REQUEST_GET_EXISTING_GAME = endpoints.ResourceContainer(
-    web_safe_key=messages.StringField(1))
+    web_safe_key=messages.StringField(1)
+)
 
 REQUEST_MOVE = endpoints.ResourceContainer(
     web_safe_key=messages.StringField(1),
@@ -32,7 +38,9 @@ REQUEST_MOVE = endpoints.ResourceContainer(
     move_two=messages.IntegerField(3)
 )
 
-REQUEST_SCORE = endpoints.ResourceContainer(list_length=messages.IntegerField(1))
+REQUEST_SCORE = endpoints.ResourceContainer(
+    list_length=messages.IntegerField(1)
+)
 
 user_h = user_handler.User_handler()
 new_game = create_game.Create_game()
@@ -41,6 +49,7 @@ get_g_list = get_game_list.Get_game_list()
 mk_move = make_move.Make_move_handler()
 score_l = score_list.Score_list_handler()
 history_h = history_handler.History_handler()
+cancel_h = cancel_handler.Cancel_handler()
 
 
 @endpoints.api(name="memo_game",
@@ -120,6 +129,14 @@ class Memo_game_API(remote.Service):
                       http_method='GET')
     def history(self, request):
         return history_h.history_handler(request)
+
+    @endpoints.method(request_message=REQUEST_GET_EXISTING_GAME,
+                      response_message=String_message,
+                      path='cancel/{web_safe_key}',
+                      name='cancel_game',
+                      http_method='DELETE')
+    def cancel(self, request):
+        return cancel_h.cancel_handler(request)
 
 
 api = endpoints.api_server([Memo_game_API])
