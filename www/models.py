@@ -31,6 +31,13 @@ class Score(ndb.Model):
     total_moves = ndb.IntegerProperty(required=True)
 
 
+class Ranking(ndb.Model):
+    user = ndb.KeyProperty(required=True, kind='User')
+    total_moves = ndb.IntegerProperty(required=True)
+    guessed_moves = ndb.IntegerProperty(required=True)
+    ranking = ndb.FloatProperty(required=True)
+
+
 class Game_form(messages.Message):
     user_id = messages.StringField(1)
     level = messages.StringField(2)
@@ -75,3 +82,10 @@ class Score_forms(messages.Message):
 
 class History_form(messages.Message):
     history = messages.BytesField(1)
+
+class Ranking_form(messages.Message):
+    user_name = messages.StringField(1)
+    ranking = messages.FloatField(2)
+
+class Ranking_forms(messages.Message):
+    items = messages.MessageField(Ranking_form, 1, repeated=True)

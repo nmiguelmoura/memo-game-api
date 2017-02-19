@@ -1,7 +1,7 @@
 import endpoints
 from copy_to_forms import copy_move_result_to_form
 from google.appengine.ext import ndb
-from models import User, Score
+from models import User, Score, Ranking
 
 class Make_move_handler():
     def __init__(self):
@@ -53,6 +53,16 @@ class Make_move_handler():
 
         if move_one_key != -1 and move_two_key != -1:
             complete = None
+            u_key = ndb.Key(User, user.email())
+
+            rankings = Ranking.query()
+            rankings = rankings.filter(Ranking.user == u_key)
+            rankings = rankings.fetch(1)
+
+            ranking = rankings[0]
+
+            ranking.total_moves = ranking.total_moves + 1
+
             if move_one_key == move_two_key:
                 guessed = True
                 score = score + 3
@@ -67,6 +77,7 @@ class Make_move_handler():
                         complete = False
                         break
                 game.complete = complete
+                ranking.guessed_moves = ranking.guessed_moves + 1
 
             else:
                 score = score - 1
@@ -80,10 +91,12 @@ class Make_move_handler():
             game.score = score
             game.put()
 
+            ranking.ranking = float(ranking.guessed_moves) / ranking.total_moves
+            ranking.put()
 
             if complete:
                 score = Score(
-                    user=ndb.Key(User, user.email()),
+                    user=u_key,
                     score=score,
                     total_moves=len(move_record) / 2
                 )

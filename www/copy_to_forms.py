@@ -1,5 +1,5 @@
 from models import Game_form, Game_list_form, Move_form, Score_form, \
-    History_form, User_profile_form
+    History_form, Ranking_form, User_profile_form
 
 
 def copy_user_profile_to_form(user_profile):
@@ -64,3 +64,11 @@ def copy_history_to_form(json):
     setattr(hist_f, 'history', json)
     hist_f.check_initialized()
     return hist_f
+
+
+def copy_ranking_from_list_to_form(rank):
+    rank_f = Ranking_form()
+    setattr(rank_f, 'user_name', rank.user.get().name)
+    setattr(rank_f, 'ranking', rank.ranking)
+    rank_f.check_initialized()
+    return rank_f

@@ -1,7 +1,7 @@
 import endpoints
 from protorpc import remote, messages, message_types
 from models import User_profile_form, Game_form, Game_list_forms, Move_form, \
-    Score_forms, History_form, String_message
+    Score_forms, History_form, Ranking_forms, String_message
 
 from settings import WEB_CLIENT_ID
 
@@ -13,6 +13,7 @@ import make_move
 import score_list
 import history_handler
 import cancel_handler
+import rankings_handler
 
 API_EXPLORER_CLIENT_ID = endpoints.API_EXPLORER_CLIENT_ID
 EMAIL_SCOPE = endpoints.EMAIL_SCOPE
@@ -50,6 +51,7 @@ mk_move = make_move.Make_move_handler()
 score_l = score_list.Score_list_handler()
 history_h = history_handler.History_handler()
 cancel_h = cancel_handler.Cancel_handler()
+rankings_h = rankings_handler.Rankings_handler()
 
 
 @endpoints.api(name="memo_game",
@@ -137,6 +139,14 @@ class Memo_game_API(remote.Service):
                       http_method='DELETE')
     def cancel(self, request):
         return cancel_h.cancel_handler(request)
+
+    @endpoints.method(request_message=message_types.VoidMessage,
+                      response_message=Ranking_forms,
+                      path='ranking',
+                      name='get_user_ranking',
+                      http_method='GET')
+    def rankings(self, request):
+        return rankings_h.rankings_handler(request)
 
 
 api = endpoints.api_server([Memo_game_API])
