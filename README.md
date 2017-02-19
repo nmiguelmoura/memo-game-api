@@ -1,9 +1,9 @@
 #Memo Game API
 
-API that allows any user to create a memo with three difficulty levels.
+API that allows any user to create a memo pair game with three difficulty levels.
 
 ##Features
-- The code runs in Google App Engine with Python.
+- The code runs in Google App Engine with Python using Google endpoints.
 - API methods to create user, create games, make guesses, get list of games, rankings, score
 - Cron task to remind users of incomplete games
 
@@ -19,6 +19,9 @@ API that allows any user to create a memo with three difficulty levels.
 ###create_user
 Allows to login a user email and name to be used with third party authentication provider. Saves new users email and nickname to datastore.
 
+Path:
+`user`
+
 Parameters:
 - **email:** string,
 - **name:** string
@@ -29,6 +32,9 @@ Response:
 
 ###create_new_game
 Allows a user to create a new game, with three difficulty levels. It then creates a random integer sequence, that stores keys to implement memo game. A possible sequence could be `[0, 2, 0, 1, 3, 4, 3, 2, 4, 1]`. In this sequence, each integer might correspond to a different figure in memo game.
+
+Path:
+`create_new_game`
 
 Parameters:
 - **level:** string (options: easy, medium, hard - defaults to easy)
@@ -45,6 +51,9 @@ Response:
 ###get_user_games
 Returns a list of all unfinished games registered by logged user.
 
+Path:
+`active_games`
+
 Response (for each game in list):
 - **user_id:** string (returns email from user)
 - **complete:** boolean (returns game status)
@@ -55,6 +64,9 @@ Response (for each game in list):
 ###get_user_complete_games
 Returns a list of games that are already finished.
 
+Path:
+`get_user_complete_games`
+
 Response (for each game in list):
 - **user_id:** string (returns email from user)
 - **complete:** boolean (returns game status)
@@ -64,6 +76,9 @@ Response (for each game in list):
 
 ###get_game
 Returns a specific game from logged.
+
+Path:
+`game/{web_safe_key}`
 
 Parameters:
 - **web_safe_key:** string
@@ -80,6 +95,9 @@ Response:
 ###move
 Allows user to make a guess in a game. Everytime a user picks a card, the api responds with the key corresponding to the card position.
 
+Path:
+`move/{web_safe_key}`
+
 Parameters:
 - **web_safe_key:** string (key that points to game in datastore)
 - **move_one:** integer (position corresponding to first card picked)
@@ -95,6 +113,9 @@ Response:
 ###get_high_scores
 Returns a list of n best game scores.
 
+Path:
+`core/{list_length}`
+
 Parameters:
 - list_length: integer (number of results to return)
 
@@ -106,6 +127,9 @@ Response (for each result in list):
 ###get_game_history
 Returns a base64 string with data from all guesses for a complete game.
 
+Path:
+`history/{web_safe_key}`
+
 Parameters:
 - **web_safe_key:** string (key that points to game in datastore)
 
@@ -115,11 +139,17 @@ Response:
 ###cancel_game
 Allows user to cancel its own games.
 
+Path:
+`cancel/{web_safe_key}`
+
 Parameters:
 - **web_safe_key:** string (key that points to game in datastore)
 
 ###get_user_ranking
 Returns a list of users ordered by ranking. Ranking is calculated dividing guessed moves by total moves and takes into account info from all user games.
+
+Path:
+`ranking`
 
 Response (for each player in ranking):
 - **user_name:** string (player nickname)
