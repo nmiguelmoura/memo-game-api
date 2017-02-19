@@ -16,7 +16,7 @@ API that allows any user to create a memo with three difficulty levels.
 - Use Google API Explorer running `localhost:8080/_ah/api/explorer` in your browser.
 
 ##API methods
-####create_user
+###create_user
 Allows to login a user email and name to be used with third party authentication provider. Saves new users email and nickname to datastore.
 
 Parameters:
@@ -27,7 +27,7 @@ Response:
 - **email:** string,
 - **name:** string
 
-####create_new_game
+###create_new_game
 Allows a user to create a new game, with three difficulty levels. It then creates a random integer sequence, that stores keys to implement memo game. A possible sequence could be `[0, 2, 0, 1, 3, 4, 3, 2, 4, 1]`. In this sequence, each integer might correspond to a different figure in memo game.
 
 Parameters:
@@ -42,7 +42,7 @@ Response:
 - **creation_date:** integer (timestamp for creation date)
 - **web_safe_key:** string (key that points to game in datastore
 
-####get_user_games
+###get_user_games
 Returns a list of all unfinished games registered by logged user.
 
 Response (for each game in list):
@@ -52,7 +52,7 @@ Response (for each game in list):
 - **creation_date:** integer (timestamp for creation date)
 - **web_safe_key:** string (key that points to game in datastore
 
-####get_user_complete_games
+###get_user_complete_games
 Returns a list of games that are already finished.
 
 Response (for each game in list):
@@ -62,7 +62,7 @@ Response (for each game in list):
 - **creation_date:** integer (timestamp for creation date)
 - **web_safe_key:** string (key that points to game in datastore)
 
-####get_game
+###get_game
 Returns a specific game from logged.
 
 Parameters:
@@ -77,7 +77,7 @@ Response:
 - **creation_date:** integer (timestamp for creation date)
 - **web_safe_key:** string (key that points to game in datastore)
 
-####move
+###move
 Allows user to make a guess in a game. Everytime a user picks a card, the api responds with the key corresponding to the card position.
 
 Parameters:
@@ -92,7 +92,7 @@ Response:
 - **score:** integer (returns game score after move)
 - **complete:** boolean (False for incomplete game, True for complete)
 
-####get_high_scores
+###get_high_scores
 Returns a list of n best game scores.
 
 Parameters:
@@ -103,7 +103,7 @@ Response (for each result in list):
 - score: integer (points scored in game)
 - total_moves: integer (returns the total number of pair guesses in a game)
 
-####get_game_history
+###get_game_history
 Returns a base64 string with data from all guesses for a complete game.
 
 Parameters:
@@ -112,13 +112,13 @@ Parameters:
 Response:
 - **history:** base64 string (string holds a json file with info related to each move: move_one, move_one_key, move_two, move_two_key, guessed)
 
-####cancel_game
+###cancel_game
 Allows user to cancel its own games.
 
 Parameters:
 - **web_safe_key:** string (key that points to game in datastore)
 
-####get_user_ranking
+###get_user_ranking
 Returns a list of users ordered by ranking. Ranking is calculated dividing guessed moves by total moves and takes into account info from all user games.
 
 Response (for each player in ranking):
