@@ -7,6 +7,9 @@ handlers:
 - url: /_ah/spi/.*
   script: project.api
 
+- url: /crons/send_reminder
+  script: main.app
+
 
 libraries:
 - name: webapp2
