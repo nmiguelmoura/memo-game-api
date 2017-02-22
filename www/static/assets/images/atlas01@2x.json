@@ -1,0 +1,20 @@
+{"frames": {
+
+"card-secret":
+{
+	"frame": {"x":2,"y":2,"w":384,"h":526},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":384,"h":526},
+	"sourceSize": {"w":384,"h":526}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "atlas01@2x.png",
+	"format": "RGBA8888",
+	"size": {"w":388,"h":530},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d9e6769036a8414943134cbbaaa4f97d:86ec941bf364ec893457a8cde925b1ad:a2df3ab47f2fb5ecbfdbdc7f020b26e5$"
+}
+}

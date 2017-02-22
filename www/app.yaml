@@ -7,6 +7,20 @@ handlers:
 - url: /_ah/spi/.*
   script: project.api
 
+- url: /
+  static_files: templates/index.html
+  upload: templates/index\.html
+  secure: always
+
+- url: /src
+  static_dir: static/src
+
+- url: /assets
+  static_dir: static/assets
+
+- url: /css
+  static_dir: static/css
+
 - url: /crons/send_reminder
   script: main.app
 

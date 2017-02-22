@@ -1,0 +1,172 @@
+{"frames": {
+
+"btn-log-no-shadow":
+{
+	"frame": {"x":595,"y":160,"w":371,"h":84},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":371,"h":84},
+	"sourceSize": {"w":371,"h":84}
+},
+"btn-log":
+{
+	"frame": {"x":209,"y":160,"w":383,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":383,"h":96},
+	"sourceSize": {"w":383,"h":96}
+},
+"card-0":
+{
+	"frame": {"x":2,"y":2,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-1":
+{
+	"frame": {"x":593,"y":259,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-2":
+{
+	"frame": {"x":416,"y":537,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-3":
+{
+	"frame": {"x":2,"y":726,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-4":
+{
+	"frame": {"x":209,"y":726,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-5":
+{
+	"frame": {"x":623,"y":537,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-6":
+{
+	"frame": {"x":800,"y":247,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-7":
+{
+	"frame": {"x":416,"y":815,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-8":
+{
+	"frame": {"x":830,"y":525,"w":192,"h":263},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":263},
+	"sourceSize": {"w":192,"h":263}
+},
+"card-9":
+{
+	"frame": {"x":623,"y":815,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-10":
+{
+	"frame": {"x":2,"y":448,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-11":
+{
+	"frame": {"x":209,"y":448,"w":204,"h":275},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":204,"h":275},
+	"sourceSize": {"w":204,"h":275}
+},
+"card-secret":
+{
+	"frame": {"x":830,"y":791,"w":192,"h":263},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":192,"h":263},
+	"sourceSize": {"w":192,"h":263}
+},
+"delete":
+{
+	"frame": {"x":752,"y":36,"w":27,"h":27},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":27,"h":27},
+	"sourceSize": {"w":27,"h":27}
+},
+"load":
+{
+	"frame": {"x":752,"y":2,"w":31,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":31,"h":31},
+	"sourceSize": {"w":31,"h":31}
+},
+"play":
+{
+	"frame": {"x":786,"y":2,"w":30,"h":39},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":17,"y":4,"w":30,"h":39},
+	"sourceSize": {"w":47,"h":47}
+},
+"title-0":
+{
+	"frame": {"x":2,"y":280,"w":588,"h":165},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":75,"w":588,"h":165},
+	"sourceSize": {"w":816,"h":301}
+},
+"title-1":
+{
+	"frame": {"x":209,"y":2,"w":540,"h":155},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":246,"y":70,"w":540,"h":155},
+	"sourceSize": {"w":798,"h":283}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "atlas00.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1092},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:d9e6769036a8414943134cbbaaa4f97d:86ec941bf364ec893457a8cde925b1ad:a2df3ab47f2fb5ecbfdbdc7f020b26e5$"
+}
+}
