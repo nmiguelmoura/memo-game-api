@@ -31,11 +31,11 @@ nmm.tools.Resize=(function(){
     this._size.height=Math.floor(this._default.h*this._scale);
 
     //definir o tamanho do renderer
-    this._renderer.resize(this._size.width / nmm.runtime.dimensions.resolution,this._size.height / nmm.runtime.dimensions.resolution);
+    this._renderer.resize(this._size.width,this._size.height);
 
     //escalar o stage
-    this._stage.scale.x=this._scale / nmm.runtime.dimensions.resolution;
-    this._stage.scale.y=this._scale / nmm.runtime.dimensions.resolution;
+    this._stage.scale.x=this._scale;
+    this._stage.scale.y=this._scale;
 
     //calcular o tamanho da app para guardar
 

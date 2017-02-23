@@ -35,8 +35,10 @@ nmm.engine.Application = (function () {
     p._setupApp = function () {
         var resolution = window.devicePixelRatio;
         var app = new PIXI.Application(WIDTH, HEIGHT, {
-            resolution: window.devicePixelRatio
+            resolution: window.devicePixelRatio,
+            autoResize: true
         });
+
         var renderer = app.renderer;
         var view = app.view;
         var stage = app.stage;
