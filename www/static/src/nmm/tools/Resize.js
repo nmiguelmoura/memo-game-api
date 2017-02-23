@@ -24,16 +24,18 @@ nmm.tools.Resize=(function(){
     //a menor escala e escolhida
     this._scale=Math.min(scaleX,scaleY);
 
+    this._scale = this._scale <= 1 ? this._scale : 1;
+
     //e necessario arredondar os valores, caso contrario o firefox e o chrome ficam ligeiramente desfocados
     this._size.width=Math.floor(this._default.w*this._scale);
     this._size.height=Math.floor(this._default.h*this._scale);
 
     //definir o tamanho do renderer
-    this._renderer.resize(this._size.width,this._size.height);
+    this._renderer.resize(this._size.width / nmm.runtime.dimensions.resolution,this._size.height / nmm.runtime.dimensions.resolution);
 
     //escalar o stage
-    this._stage.scale.x=this._scale;
-    this._stage.scale.y=this._scale;
+    this._stage.scale.x=this._scale / nmm.runtime.dimensions.resolution;
+    this._stage.scale.y=this._scale / nmm.runtime.dimensions.resolution;
 
     //calcular o tamanho da app para guardar
 
@@ -42,32 +44,9 @@ nmm.tools.Resize=(function(){
 
   Resize.prototype._canvasAlignment=function(){
     //alinhar ao centro do ecra
-    var center;
-    this._margin={x:0,y:0};
-    if(this._size.width>this._size.height){
-      if(this._size.width<this._size.windowWidth){
-        center='horizontal';
-      }
-      else{
-        center='vertical';
-      }
-    }
-    else{
-      if(this._size.height<this._size.windowHeight){
-        center='vertical';
-      }
-      else{
-        center='horizontal';
-      }
-    }
-
-    if(center==='horizontal'){
-      this._margin.x=(this._size.windowWidth-this._size.width)/2;
-    }
-    else{
-      this._margin.y=(this._size.windowHeight-this._size.height)/2;
-    }
-
+    this._margin={};
+    this._margin.x=(this._size.windowWidth-this._size.width)/2;
+    this._margin.y=(this._size.windowHeight-this._size.height)/2;
     this._renderer.view.style.marginLeft=this._margin.x+'px';
     this._renderer.view.style.marginTop=this._margin.y+'px';
   };
