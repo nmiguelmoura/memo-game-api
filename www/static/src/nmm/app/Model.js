@@ -4,6 +4,18 @@ nmm.app.Model = (function () {
     function Model() {
         this.poolMaxElements = 48;
 
+        this.bg = {
+            numLines: 5,
+            numCardsPerLine: 4,
+            speeds: [
+                0.15,
+                0.25,
+                0.20,
+                0.15,
+                0.20
+            ]
+        };
+
         this.menu = {
             btns: [
                 {

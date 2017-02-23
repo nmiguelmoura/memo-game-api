@@ -25,7 +25,7 @@ nmm.app.SceneController=(function(){
         this._viewManager = new nmm.app.ViewManager(this);
         //menu
         var menuView = new nmm.app.MenuView(this, 'menu');
-        this._viewManager.registerView(menuView);
+        this._viewManager.registerView(menuView, true);
 
         var difficultyView = new nmm.app.DifficultyView(this, 'difficulty');
         this._viewManager.registerView(difficultyView);
@@ -34,7 +34,7 @@ nmm.app.SceneController=(function(){
         this._viewManager.registerView(gameSelectionView);
 
         var gameView = new nmm.app.GameView(this, 'game', this._pool);
-        this._viewManager.registerView(gameView, true);
+        this._viewManager.registerView(gameView);
 
         var scoreView = new nmm.app.ScoreView(this, 'score');
         this._viewManager.registerView(scoreView);
@@ -45,7 +45,7 @@ nmm.app.SceneController=(function(){
 
         this._pool = new nmm.app.Pool(this._model.poolMaxElements, this._model.game.numTotalCards);
 
-        var bg = new nmm.app.Bg(this._pool, this._model.game.numTotalCards);
+        var bg = new nmm.app.Bg(this._pool,this._model.bg, this._model.game.numTotalCards);
         this.addChild(bg);
         this._registerViews();
     };

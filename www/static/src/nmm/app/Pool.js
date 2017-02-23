@@ -12,6 +12,7 @@ nmm.app.Pool = (function(){
     p.returnToPool = function (object) {
         object.reset();
         object.alpha = 1;
+        object.scale.set(1);
         this._pool.push(object);
     };
 
