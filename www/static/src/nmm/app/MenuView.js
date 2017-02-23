@@ -18,6 +18,13 @@ nmm.app.MenuView = (function(){
 
     var p = MenuView.prototype;
 
+    p.animateOut = function (callback) {
+        //do stuff
+
+
+        nmm.app.ViewProto.prototype.animateOut.call(this, callback);
+    };
+
     p._click = function (key) {
         switch(key) {
             case LOGIN:
@@ -42,7 +49,7 @@ nmm.app.MenuView = (function(){
     p._addOptions = function () {
         this._optionsContainer = new PIXI.Container();
 
-        var btns = this._controller.getInfo('menu').btns,
+        var btns = this._controller.getInfo(this.name).btns,
             btn,
             style = {
                 fontFamily: 'Arial',

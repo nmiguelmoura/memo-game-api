@@ -4,6 +4,7 @@ nmm.app.DifficultyView = (function(){
     function DifficultyView(controller, name){
         nmm.app.ViewProto.call(this, name);
         this._controller = controller;
+        this._btns = [];
         this._init();
     }
 
@@ -16,12 +17,51 @@ nmm.app.DifficultyView = (function(){
 
     };
 
-    p._addBg = function () {
+    p.animateOut = function (callback) {
+        //do stuff
+
+
+        nmm.app.ViewProto.prototype.animateOut.call(this, callback);
+    };
+
+    p._click = function (key) {
 
     };
 
+    p._addOptions = function () {
+        var btns = this._controller.getInfo(this.name).btns,
+            btn,
+            style = {
+                fontFamily: 'Arial',
+                fontSize: '120px',
+                fill: '#FFFFFF'
+            },
+            graph = new PIXI.Graphics(),
+            text = new PIXI.Text('', style),
+            texture;
+
+        graph.addChild(text);
+
+        btns.forEach(function (b, i) {
+            text.setText(b.text);
+            texture = graph.generateTexture();
+            btn = new nmm.uiPIXI.TexturedBtn({
+                fillTexture: texture,
+                x: b.x,
+                y: b.y,
+                key: b.key,
+                scale: 0.5,
+                autoHide: false,
+                callback: this._clickBound
+            });
+            this.addChild(btn);
+            this._btns.push(btn);
+        }, this);
+    };
+
     p._init = function () {
-        this._addBg();
+        this._clickBound = this._click.bind(this);
+        this._addOptions();
     };
 
     return DifficultyView;

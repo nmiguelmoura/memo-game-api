@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- '111248907577-db9pioih0u8s8e9u626r0i8cf2lk7kr9.apps.googleusercontent.com' -->
+</head>
+<body>
+<button id="signInBtn" onclick="auth()">sign</button>
+<script>
+
+    var CLIENT_ID = '111248907577-db9pioih0u8s8e9u626r0i8cf2lk7kr9.apps.googleusercontent.com';
+    var SCOPES = 'https://www.googleapis.com/auth/userinfo.email';
+
+    var s_btn = document.getElementById('signInBtn');
+
+    var signedIn = false;
+
+    var retrieveProfileCallback = function () {
+                gapi.client.memo_game.create_user().
+                    execute(function (resp) {
+                        console.log(resp)
+                    }
+                );
+            };
+
+    function userAuthed() {
+        var request = gapi.client.oauth2.userinfo.get().execute(function (resp) {
+            if (!resp.code) {
+                signedIn = true;
+                s_btn.innerHTML = 'Sign out';
+                retrieveProfileCallback()
+            }
+        });
+    }
+
+    function signin(mode, callback) {
+        gapi.auth.authorize({
+                    client_id: CLIENT_ID,
+                    scope: SCOPES, immediate: mode
+                },
+                callback);
+    }
+
+    function auth() {
+        if (!signedIn) {
+            signin(false, userAuthed);
+        } else {
+            signedIn = false;
+            s_btn.innerHTML = 'Sign in';
+        }
+    }
+
+
+    function init() {
+        var apiRoot = '//' + window.location.host + '/_ah/api',
+                apisToLoad = 2; // must match number of calls to gapi.client.load();
+
+        function callback() {
+
+        }
+
+        gapi.client.load('memo_game', 'v1', callback, apiRoot);
+        gapi.client.load('oauth2', 'v2', callback);
+    }
+</script>
+<script src="https://apis.google.com/js/client.js?onload=init"></script>
+</body>
+</html>
