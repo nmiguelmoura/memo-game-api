@@ -1,7 +1,16 @@
 nmm.app.Model = (function () {
     'use strict';
 
-    function Model() {
+    var CLIENT_ID = '111248907577-db9pioih0u8s8e9u626r0i8cf2lk7kr9.apps.googleusercontent.com';
+    var SCOPES = 'https://www.googleapis.com/auth/userinfo.email';
+    var self;
+
+    function Model(controller) {
+        self = this;
+        this._controller = controller;
+        this.isUserLogged = false;
+        this.isAPIReady = false;
+
         this.poolMaxElements = 48;
 
         this.bg = {
@@ -172,15 +181,15 @@ nmm.app.Model = (function () {
                 width: 405,
                 column0: {
                     title: 'Top Score',
-                        subTitle: 'pts.',
-                        x: 57,
-                        y: 57
+                    subTitle: 'pts.',
+                    x: 57,
+                    y: 57
                 },
                 column1: {
                     title: 'Player Ranking',
-                        subTitle: '% guesses',
-                        x: 562,
-                        y: 57
+                    subTitle: '% guesses',
+                    x: 562,
+                    y: 57
                 }
             }
 
@@ -188,6 +197,56 @@ nmm.app.Model = (function () {
     }
 
     var p = Model.prototype;
+
+
+    //oauth2
+
+    p.retrieveProfileCallback = function () {
+        gapi.client.memo_game.create_user().execute(function (resp) {
+                console.log(resp);
+                self._controller.loginSuccessfull();
+            }
+        );
+    };
+
+    p.userAuthed = function () {
+        var request = gapi.client.oauth2.userinfo.get().execute(function (resp) {
+            if (!resp.code) {
+                self.isUserLogged = true;
+                //s_btn.innerHTML = 'Sign out';
+                self.retrieveProfileCallback(self);
+            }
+        });
+    };
+
+    p.signin = function (mode, callback) {
+        gapi.auth.authorize({
+                client_id: CLIENT_ID,
+                scope: SCOPES, immediate: mode
+            },
+            callback);
+    };
+
+    p.auth = function () {
+        if (!this.isUserLogged) {
+            this.signin(false, this.userAuthed.bind(self));
+        } else {
+            this.isUserLogged = false;
+            //s_btn.innerHTML = 'Sign in';
+        }
+    };
+
+    p.setupGoogleAPI = function () {
+        var apiRoot = '//' + window.location.host + '/_ah/api',
+            apisToLoad = 2; // must match number of calls to gapi.client.load();
+
+        function callback() {
+            self.isAPIReady = true;
+        }
+
+        gapi.client.load('memo_game', 'v1', callback, apiRoot);
+        gapi.client.load('oauth2', 'v2', callback);
+    };
 
     return Model;
 })();

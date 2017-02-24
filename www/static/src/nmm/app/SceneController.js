@@ -16,6 +16,22 @@ nmm.app.SceneController=(function(){
 
     var p = SceneController.prototype;
 
+    p.allowDifficultySelect = function () {
+        this._viewManager.changeActiveView('difficulty');
+    };
+
+    p.loginSuccessfull = function () {
+        this._menuView.checkStatus();
+    };
+
+    p.attemptLogin = function () {
+        this._model.auth();
+    };
+
+    p.isUserLogged = function () {
+        return this._model.isUserLogged;
+    };
+
     p.getInfo = function (viewName) {
         return this._model[viewName];
     };
@@ -24,30 +40,32 @@ nmm.app.SceneController=(function(){
         //view manager
         this._viewManager = new nmm.app.ViewManager(this);
         //menu
-        var menuView = new nmm.app.MenuView(this, 'menu');
-        this._viewManager.registerView(menuView, true);
+        this._menuView = new nmm.app.MenuView(this, 'menu');
+        this._viewManager.registerView(this._menuView, true);
 
-        var difficultyView = new nmm.app.DifficultyView(this, 'difficulty');
-        this._viewManager.registerView(difficultyView);
+        this._difficultyView = new nmm.app.DifficultyView(this, 'difficulty');
+        this._viewManager.registerView(this._difficultyView);
 
-        var gameSelectionView = new nmm.app.GameSelectionView(this, 'gameSelection');
-        this._viewManager.registerView(gameSelectionView);
+        this._gameSelectionView = new nmm.app.GameSelectionView(this, 'gameSelection');
+        this._viewManager.registerView(this._gameSelectionView);
 
-        var gameView = new nmm.app.GameView(this, 'game', this._pool);
-        this._viewManager.registerView(gameView);
+        this._gameView = new nmm.app.GameView(this, 'game', this._pool);
+        this._viewManager.registerView(this._gameView);
 
-        var scoreView = new nmm.app.ScoreView(this, 'score');
-        this._viewManager.registerView(scoreView);
+        this._scoreView = new nmm.app.ScoreView(this, 'score');
+        this._viewManager.registerView(this._scoreView);
     };
 
     p._init = function () {
-        this._model = new nmm.app.Model();
+        this._model = new nmm.app.Model(this);
 
         this._pool = new nmm.app.Pool(this._model.poolMaxElements, this._model.game.numTotalCards);
 
         var bg = new nmm.app.Bg(this._pool,this._model.bg, this._model.game.numTotalCards);
         this.addChild(bg);
         this._registerViews();
+
+        this._model.setupGoogleAPI();
     };
 
     return SceneController;

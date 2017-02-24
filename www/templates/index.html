@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,  user-scalable=no">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
+<body onload="init()">
     <script>
         var nmm = {};
         nmm.app = {};
@@ -43,5 +43,11 @@
     <script src="/src/nmm/tools/Preloader.js"></script>
     <script src="/src/nmm/tools/Resize.js"></script>
     <script src="/src/nmm/engine/Main.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script>
+        function init () {
+            nmm.runtime.main = new nmm.engine.Application();
+        }
+    </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-nmm.app.MenuView = (function(){
+nmm.app.MenuView = (function () {
     'use strict';
 
     var LOGIN = 0,
@@ -6,7 +6,7 @@ nmm.app.MenuView = (function(){
         LOAD = 2,
         HISTORY = 3;
 
-    function MenuView(controller, name){
+    function MenuView(controller, name) {
         nmm.app.ViewProto.call(this, name);
         this._controller = controller;
         this._btns = [];
@@ -20,17 +20,21 @@ nmm.app.MenuView = (function(){
 
     p.animateOut = function (callback) {
         //do stuff
-
+        this._btns.forEach(function (btn) {
+            btn.hide();
+        });
 
         nmm.app.ViewProto.prototype.animateOut.call(this, callback);
     };
 
     p._click = function (key) {
-        switch(key) {
+        switch (key) {
             case LOGIN:
+                this._controller.attemptLogin();
                 break;
 
             case NEW:
+                this._controller.allowDifficultySelect();
                 break;
 
             case LOAD:
@@ -39,11 +43,31 @@ nmm.app.MenuView = (function(){
             case HISTORY:
                 break;
         }
-        console.log(key);
     };
 
     p.viewIn = function () {
 
+    };
+
+    p.checkStatus = function () {
+        var isUserLogged = this._controller.isUserLogged()
+
+        if (isUserLogged) {
+            this._loginBtn.hide();
+            this._btns.forEach(function (btn) {
+                btn.show();
+            }, this);
+        } else {
+            this._loginBtn.show();
+            this._btns.forEach(function (btn) {
+                btn.hide();
+            }, this);
+        }
+    };
+
+    p.animateIn = function () {
+        this.checkStatus();
+        nmm.app.ViewProto.prototype.animateIn.call(this);
     };
 
     p._addOptions = function () {

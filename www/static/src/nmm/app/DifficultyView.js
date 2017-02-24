@@ -19,9 +19,18 @@ nmm.app.DifficultyView = (function(){
 
     p.animateOut = function (callback) {
         //do stuff
-
+        this._btns.forEach(function (btn) {
+            btn.hide();
+        });
 
         nmm.app.ViewProto.prototype.animateOut.call(this, callback);
+    };
+
+    p.animateIn = function () {
+        this._btns.forEach(function (btn) {
+            btn.show();
+        });
+        nmm.app.ViewProto.prototype.animateIn.call(this);
     };
 
     p._click = function (key) {
@@ -54,6 +63,7 @@ nmm.app.DifficultyView = (function(){
                 autoHide: false,
                 callback: this._clickBound
             });
+            btn.hide();
             this.addChild(btn);
             this._btns.push(btn);
         }, this);

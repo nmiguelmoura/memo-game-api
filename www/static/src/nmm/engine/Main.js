@@ -4,11 +4,13 @@ nmm.engine.Application = (function () {
     var WIDTH = 1024,
         HEIGHT = 768;
 
-    function Application () {
+    function Application() {
         this._init();
     }
 
     var p = Application.prototype;
+
+
 
     p._assetsLoaded = function () {
         nmm.runtime.appSetup.stage.removeChild(this._preloader);
@@ -29,7 +31,7 @@ nmm.engine.Application = (function () {
     };
 
     p._resizeApp = function () {
-        var resize=new nmm.tools.Resize(nmm.runtime.appSetup.renderer,nmm.runtime.appSetup.stage, WIDTH, HEIGHT);
+        var resize = new nmm.tools.Resize(nmm.runtime.appSetup.renderer, nmm.runtime.appSetup.stage, WIDTH, HEIGHT);
     };
 
     p._setupApp = function () {
@@ -67,5 +69,3 @@ nmm.engine.Application = (function () {
 
     return Application;
 })();
-
-nmm.runtime.main = new nmm.engine.Application();
