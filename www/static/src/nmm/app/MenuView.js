@@ -38,9 +38,11 @@ nmm.app.MenuView = (function () {
                 break;
 
             case LOAD:
+                this._controller.showStoredGames(false);
                 break;
 
             case HISTORY:
+                this._controller.showStoredGames(true);
                 break;
         }
     };
@@ -50,7 +52,7 @@ nmm.app.MenuView = (function () {
     };
 
     p.checkStatus = function () {
-        var isUserLogged = this._controller.isUserLogged()
+        var isUserLogged = this._controller.isUserLogged();
 
         if (isUserLogged) {
             this._loginBtn.hide();
@@ -66,7 +68,6 @@ nmm.app.MenuView = (function () {
     };
 
     p.animateIn = function () {
-        this.checkStatus();
         nmm.app.ViewProto.prototype.animateIn.call(this);
     };
 
@@ -98,6 +99,7 @@ nmm.app.MenuView = (function () {
                 autoHide: false,
                 callback: this._clickBound
             });
+            btn.hide();
             this._optionsContainer.addChild(btn);
             this._btns.push(btn);
         }, this);
@@ -118,6 +120,7 @@ nmm.app.MenuView = (function () {
             autoHide: true,
             callback: this._clickBound
         });
+        this._loginBtn.hide();
         this.addChild(this._loginBtn);
     };
 

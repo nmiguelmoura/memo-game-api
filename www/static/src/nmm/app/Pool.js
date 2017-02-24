@@ -13,6 +13,10 @@ nmm.app.Pool = (function(){
         object.reset();
         object.alpha = 1;
         object.scale.set(1);
+        object.btn.hide();
+        object.key = null;
+        object.callback = null;
+        object.guessed = false;
         this._pool.push(object);
     };
 

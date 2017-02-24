@@ -9,7 +9,6 @@ nmm.app.Model = (function () {
         self = this;
         this._controller = controller;
         this.isUserLogged = false;
-        this.isAPIReady = false;
 
         this.poolMaxElements = 48;
 
@@ -78,16 +77,6 @@ nmm.app.Model = (function () {
             info: [
                 {
                     text: 'Score:',
-                    x: 400,
-                    y: 50
-                },
-                {
-                    text: 'Found:',
-                    x: 550,
-                    y: 50
-                },
-                {
-                    text: 'Moves:',
                     x: 680,
                     y: 50
                 }
@@ -111,15 +100,6 @@ nmm.app.Model = (function () {
                     x: 683,
                     y: 15,
                     key: 2
-                }
-            ],
-            games: [
-                {
-                    //TODO apagar isto
-                    name: '',
-                    score: 0,
-                    moves: 0,
-                    complete: false
                 }
             ]
         };
@@ -173,7 +153,8 @@ nmm.app.Model = (function () {
                     x: 800,
                     y: 26
                 }
-            ]
+            ],
+            current: {}
         };
 
         this.score = {
@@ -198,6 +179,64 @@ nmm.app.Model = (function () {
 
     var p = Model.prototype;
 
+    //get finished games
+    p.getFinishedGames = function () {
+        gapi.client.memo_game.get_user_complete_games()
+            .execute(function (resp) {
+                console.log(resp);
+                self._controller.gameListReady(resp);
+            });
+    };
+
+    //get unfinished games
+    p.getUnfinishedGames = function () {
+        gapi.client.memo_game.get_user_games()
+            .execute(function (resp) {
+                console.log(resp);
+                self._controller.gameListReady(resp);
+            });
+    };
+
+    //make a move
+
+    p.updateMoveRecord = function (move_one, move_two) {
+        if (!this.game.current.move_record) {
+            this.game.current.move_record = [];
+        }
+        this.game.current.move_record.push(move_one, move_two);
+    };
+
+    p.makeMove = function (cardsTurned) {
+        var move_one = cardsTurned[0],
+            move_two;
+
+        if (cardsTurned.length === 2) {
+            move_two = cardsTurned[1];
+            this.updateMoveRecord(move_one, move_two);
+        }
+        gapi.client.memo_game.move({
+            'web_safe_key': this.game.current.web_safe_key,
+            'move_one': move_one,
+            'move_two': move_two
+        }).execute(function (resp) {
+            console.log(resp);
+            self._controller.movePosted(resp);
+        });
+    };
+
+    //create a new game
+
+    p.createGame = function (level) {
+        var levels = ['easy', 'medium', 'hard'];
+        level = levels[level];
+        gapi.client.memo_game.create_game({
+            'level': level
+        }).execute(function (resp) {
+            console.log(resp);
+            self.game.current = resp.result;
+            self._controller.gameCreated(self.game.current);
+        });
+    };
 
     //oauth2
 
@@ -232,16 +271,19 @@ nmm.app.Model = (function () {
             this.signin(false, this.userAuthed.bind(self));
         } else {
             this.isUserLogged = false;
-            //s_btn.innerHTML = 'Sign in';
         }
     };
 
     p.setupGoogleAPI = function () {
         var apiRoot = '//' + window.location.host + '/_ah/api',
-            apisToLoad = 2; // must match number of calls to gapi.client.load();
+            apisToLoad = 2,
+            apisLoaded = 0; // must match number of calls to gapi.client.load();
 
         function callback() {
-            self.isAPIReady = true;
+            apisLoaded++;
+            if (apisLoaded === apisToLoad) {
+                self._controller.apiReady();
+            }
         }
 
         gapi.client.load('memo_game', 'v1', callback, apiRoot);

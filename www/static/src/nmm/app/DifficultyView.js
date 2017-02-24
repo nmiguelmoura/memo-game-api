@@ -34,7 +34,7 @@ nmm.app.DifficultyView = (function(){
     };
 
     p._click = function (key) {
-
+        this._controller.createGame(key);
     };
 
     p._addOptions = function () {

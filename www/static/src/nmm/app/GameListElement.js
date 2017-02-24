@@ -12,6 +12,7 @@ nmm.app.GameListElement = (function(){
         this._dataBtns = data.btns;
         this._valueTexts = [];
         this._btns = [];
+        this.web_safe_key = null;
         this._init();
     }
 
@@ -20,12 +21,41 @@ nmm.app.GameListElement = (function(){
 
     var p = GameListElement.prototype;
 
-    p.update = function (data) {
+    p.disable = function () {
+        this._btns.forEach(function (btn) {
+            btn.hide();
+        });
+    };
 
+    p.update = function (data, i) {
+        this._mainText.setText('Game ' + i);
+        this._valueTexts[0].setText(data.score);
+        this._valueTexts[0].setText(data.score);
+
+        if(data.complete) {
+            this._btns[PLAY].show();
+        } else {
+            this._btns[LOAD].show();
+            this._btns[DELETE].show();
+        }
+
+        this.web_safe_key = data.web_safe_key;
     };
 
     p._click = function (key) {
+        switch(key) {
+            case LOAD:
+                this._controller.loadGame(this.web_safe_key);
+                break;
 
+            case DELETE:
+                this._controller.deleteGame(this.web_safe_key);
+                break;
+
+            case PLAY:
+                this._controller.watchGame(this.web_safe_key);
+                break;
+        }
     };
 
     p._addBtns = function () {
@@ -84,7 +114,7 @@ nmm.app.GameListElement = (function(){
             fontSize: '30px',
             fill: "#FFFFFF"
         };
-        this._mainText = new PIXI.Text('main text', style);
+        this._mainText = new PIXI.Text('', style);
         this.addChild(this._mainText);
     };
 
