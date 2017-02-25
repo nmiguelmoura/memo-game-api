@@ -33,6 +33,9 @@ class Make_move_handler():
 
         # Fetch game.
         game = game_key.get()
+        if not game:
+            raise endpoints.NotFoundException('Game not found')
+
         if game.complete:
             raise endpoints.UnauthorizedException('This game is already finished!')
 
