@@ -23,6 +23,8 @@ class History_handler():
             raise endpoints.UnauthorizedException('Authentication required!')
 
         sequence = game.sequence
+        score = game.score
+        level = game.level
         move_record = game.move_record
         loop_range = len(move_record) / 2
         result = []
@@ -42,4 +44,4 @@ class History_handler():
             }
             result.append(move)
 
-        return copy_history_to_form(json.dumps(result))
+        return copy_history_to_form(json.dumps(result), score, level)

@@ -16,20 +16,58 @@ nmm.app.SceneController = (function () {
 
     var p = SceneController.prototype;
 
-    p.watchGame = function (web_safe_key) {
+    p.scoreReady = function () {
+        TweenLite.delayedCall(4, function () {
+            this._viewManager.changeActiveView('menu');
+            this._menuView.checkStatus();
+        }, [], this);
+    };
 
+    p.rankingLoaded = function (data) {
+        this._scoreView.updateRanking(data.result.items);
+    };
+
+    p.scoreLoaded = function (data) {
+        this._scoreView.updateScore(data.result.items);
+    };
+
+    p.gameOver = function () {
+        this._model.getTopScore();
+        this._model.getRankings();
+        this._viewManager.changeActiveView('score');
+    };
+
+    p.gameHistoryLoaded = function (level, score, history) {
+        this._gameView.playMode(score, history, this._model.game[level]);
+    };
+
+    p.watchGame = function (web_safe_key) {
+        this._model.getGameHistory(web_safe_key);
+        this._viewManager.changeActiveView('game');
     };
 
     p.deleteGame = function (web_safe_key) {
+        this._gameSelectionView.clear();
+        this._model.deleteGame(web_safe_key);
+    };
 
+    p.gameDataLoaded = function (data) {
+        this._gameView.update(data, this._model.game[data.level]);
     };
 
     p.loadGame = function (web_safe_key) {
-        
+        this._model.loadGame(web_safe_key);
+        this._viewManager.changeActiveView('game')
     };
 
     p.gameListReady = function (data) {
         this._gameSelectionView.update(data.result.items);
+        if(!data.result.items) {
+            TweenLite.delayedCall(2, function () {
+                this._viewManager.changeActiveView('menu');
+                this._menuView.checkStatus();
+            }, [], this);
+        }
     };
 
     p.showStoredGames = function (complete) {
@@ -56,7 +94,7 @@ nmm.app.SceneController = (function () {
         } else {
             //two cards turned
             this._gameView.turnCard(1, parseInt(data.move_two_key));
-            this._gameView.updateValues(data.score, this._model.game.current.move_record);
+            this._gameView.updateValues(data.score, this._model.game.current.move_record.length / 2);
 
             //check if guessed
             if (data.guessed) {
@@ -65,7 +103,12 @@ nmm.app.SceneController = (function () {
 
                 //check if complete
                 if (data.complete) {
-
+                    TweenLite.delayedCall(1, function () {
+                        this._gameView.gameOver();
+                    }, [], this);
+                    TweenLite.delayedCall(3, function () {
+                        this.gameOver();
+                    }, [], this);
                 } else {
                     this.enableRemainingCards(0.5);
                 }

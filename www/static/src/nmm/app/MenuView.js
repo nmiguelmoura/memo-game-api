@@ -64,11 +64,14 @@ nmm.app.MenuView = (function () {
             this._btns.forEach(function (btn) {
                 btn.hide();
             }, this);
-        }
-    };
 
-    p.animateIn = function () {
-        nmm.app.ViewProto.prototype.animateIn.call(this);
+            nmm.runtime.appSetup.app.ticker.remove(this._loaderUpdateBound);
+            this.removeChild(this._loader);
+            this._loader.destroy({
+                children: true,
+                texture: true
+            });
+        }
     };
 
     p._addOptions = function () {
@@ -138,12 +141,27 @@ nmm.app.MenuView = (function () {
         this.addChild(title);
     };
 
+    p._loaderUpdate = function () {
+        this._loader.rotation += 0.02;
+    };
+
+    p._addLoader = function () {
+        this._loader = new PIXI.Sprite(PIXI.Texture.fromFrame('loader'));
+        this._loader.anchor.set(0.5);
+        this._loader.position.set(512, 638);
+        this.addChild(this._loader);
+    };
+
     p._init = function () {
         this._addTitle();
 
         this._clickBound = this._click.bind(this);
+        this._addLoader();
         this._addLoginBtn();
         this._addOptions();
+
+        this._loaderUpdateBound = this._loaderUpdate.bind(this);
+        nmm.runtime.appSetup.app.ticker.add(this._loaderUpdateBound);
     };
 
     return MenuView;

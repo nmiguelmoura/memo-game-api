@@ -41,11 +41,12 @@ nmm.app.Card = (function () {
     };
 
     p.turnCard = function (key) {
+        var cardScale = this.scale.x;
         TweenLite.to(this.scale, 0.25, {x: 0});
         TweenLite.delayedCall(0.25, function () {
             this.gotoAndStop(key);
         }, [], this);
-        TweenLite.to(this.scale, 0.25, {x: 1, delay: 0.25});
+        TweenLite.to(this.scale, 0.25, {x: cardScale, delay: 0.25});
     };
 
     p._getTextures = function () {

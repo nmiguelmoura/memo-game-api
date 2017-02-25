@@ -6,6 +6,7 @@ nmm.app.ScoreView = (function () {
         this._controller = controller;
         this._topTexts = {};
         this._rankingTexts = {};
+        this._tablesReady = 0;
         this._init();
     }
 
@@ -14,12 +15,54 @@ nmm.app.ScoreView = (function () {
 
     var p = ScoreView.prototype;
 
-    p.update = function (data) {
+    p._incrementTableReady = function () {
+        this._tablesReady ++;
+        if(this._tablesReady === 2) {
+            this._controller.scoreReady();
+        }
+    };
 
+    p._fillTable = function (textObj, data, ranking) {
+        var i,
+            length = data.length,
+            name = '',
+            value = '',
+            d;
+
+        for(i = 0; i < length; i++) {
+            d = data[i];
+            name += d.user_name + '\n';
+
+            if(ranking) {
+                value += Math.round(parseFloat(d.ranking) * 100) + '\n';
+            } else {
+                value += d.score + '\n';
+            }
+        }
+
+        textObj.playerName.setText(name);
+        textObj.score.setText(value);
+    };
+
+    p.updateRanking = function (data) {
+        if(data.length > 15) {
+            data.splice(15, data.length - 1);
+        }
+        this._incrementTableReady();
+        this._fillTable(this._rankingTexts, data, true);
+    };
+
+    p.updateScore = function (data) {
+        this._incrementTableReady();
+        this._fillTable(this._topTexts, data);
     };
 
     p.viewOut = function () {
-
+        this._topTexts.playerName.setText('');
+        this._topTexts.score.setText('');
+        this._rankingTexts.playerName.setText('');
+        this._rankingTexts.score.setText('');
+        this.tablesReady = 0;
     };
 
     p.viewIn = function () {
@@ -52,12 +95,13 @@ nmm.app.ScoreView = (function () {
         graph.position.set(0, 55);
         column.addChild(graph);
 
-        style.lineHeight = 30;
+        style.lineHeight = 40;
         var player = new PIXI.Text('', style);
         player.position.y = 75;
         column.addChild(player);
         obj.playerName = player;
 
+        style.align = 'right';
         var score = new PIXI.Text('', style);
         score.position.set(width, 75);
         score.anchor.set(1, 0);

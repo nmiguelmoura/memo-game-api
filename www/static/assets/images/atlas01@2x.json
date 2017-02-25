@@ -1,20 +1,52 @@
 {"frames": {
 
+"card-6":
+{
+	"frame": {"x":2,"y":2,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
+"card-7":
+{
+	"frame": {"x":411,"y":2,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
+"card-8":
+{
+	"frame": {"x":820,"y":2,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
+"card-9":
+{
+	"frame": {"x":1229,"y":2,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
 "card-secret":
 {
-	"frame": {"x":2,"y":2,"w":384,"h":526},
+	"frame": {"x":1638,"y":2,"w":406,"h":548},
 	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":384,"h":526},
-	"sourceSize": {"w":384,"h":526}
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "atlas01@2x.png",
 	"format": "RGBA8888",
-	"size": {"w":388,"h":530},
+	"size": {"w":2046,"h":552},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:7d3b7d3619ec4e5aa7bec6ecd1b1b859:2452de7922c081a2d1db0324d5b83f9c:8d03dcacf632cfc59c2d4640d470e873$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ac5423aaae6c4747475c61df5d761307:84262487ce2ceab5d89f7537bbbbb485:8d03dcacf632cfc59c2d4640d470e873$"
 }
 }

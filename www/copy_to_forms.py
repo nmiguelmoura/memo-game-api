@@ -57,11 +57,13 @@ def copy_score_list_to_form(score):
     score_f.check_initialized()
     return score_f
 
-def copy_history_to_form(json):
+def copy_history_to_form(json, score, level):
     # Following an aproach as seen in
     # http://stackoverflow.com/questions/13576140/protorpc-returning-dict
     hist_f = History_form()
     setattr(hist_f, 'history', json)
+    setattr(hist_f, 'score', score)
+    setattr(hist_f, 'level', level)
     hist_f.check_initialized()
     return hist_f
 

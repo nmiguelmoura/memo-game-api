@@ -179,6 +179,60 @@ nmm.app.Model = (function () {
 
     var p = Model.prototype;
 
+    //get rankings
+    p.getRankings = function () {
+        gapi.client.memo_game.get_user_ranking()
+            .execute(function (resp) {
+                console.log(resp);
+                self._controller.rankingLoaded(resp);
+            });
+    };
+
+    //get top score
+    p.getTopScore = function () {
+        gapi.client.memo_game.get_high_scores({
+            'list_length': 15
+        }).execute(function (resp) {
+            console.log(resp);
+            self._controller.scoreLoaded(resp);
+        });
+    };
+
+    //get game history
+    p.getGameHistory = function (web_safe_key) {
+        gapi.client.memo_game.get_game_history({
+            'web_safe_key': web_safe_key
+        }).execute(function (resp) {
+            console.log(resp);
+            var level = resp.result.level;
+            var score = resp.result.score;
+            var json = atob(resp.result.history);
+            var history = JSON.parse(json);
+            self._controller.gameHistoryLoaded(level, score, history);
+        });
+    };
+
+    //delete game
+    p.deleteGame = function (web_safe_key) {
+        gapi.client.memo_game.cancel_game({
+            'web_safe_key': web_safe_key
+        }).execute(function (resp) {
+            console.log(resp);
+            self.getUnfinishedGames();
+        });
+    };
+
+    //load game
+    p.loadGame = function (web_safe_key) {
+        gapi.client.memo_game.get_game({
+            'web_safe_key': web_safe_key
+        }).execute(function (resp) {
+            console.log(resp);
+            self.game.current = resp.result;
+            self._controller.gameDataLoaded(resp);
+        });
+    };
+
     //get finished games
     p.getFinishedGames = function () {
         gapi.client.memo_game.get_user_complete_games()

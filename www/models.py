@@ -44,9 +44,10 @@ class Game_form(messages.Message):
     tile_number = messages.IntegerField(3)
     tiles_found = messages.IntegerField(4, repeated=True)
     score = messages.IntegerField(5)
-    complete = messages.BooleanField(6)
-    creation_date = messages.FloatField(7)
-    web_safe_key = messages.StringField(8)
+    move_record = messages.IntegerField(6, repeated=True)
+    complete = messages.BooleanField(7)
+    creation_date = messages.FloatField(8)
+    web_safe_key = messages.StringField(9)
 
 
 class Game_list_form(messages.Message):
@@ -82,6 +83,8 @@ class Score_forms(messages.Message):
 
 class History_form(messages.Message):
     history = messages.BytesField(1)
+    score = messages.IntegerField(2)
+    level = messages.StringField(3)
 
 class Ranking_form(messages.Message):
     user_name = messages.StringField(1)
