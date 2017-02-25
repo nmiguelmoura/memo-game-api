@@ -98,7 +98,7 @@ nmm.app.SceneController = (function () {
 
             //check if guessed
             if (data.guessed) {
-                //play guessed sound
+                nmm.runtime.audio.playSound('audioSprite', 'correct');
                 this._gameView.markMoveCardsAsGuessed();
 
                 //check if complete
@@ -113,7 +113,7 @@ nmm.app.SceneController = (function () {
                     this.enableRemainingCards(0.5);
                 }
             } else {
-                //play error sound
+                nmm.runtime.audio.playSound('audioSprite', 'wrong');
                 TweenLite.delayedCall(1, function () {
                     this._gameView.resetLastMove();
                     this.enableRemainingCards(0.5);
@@ -194,6 +194,8 @@ nmm.app.SceneController = (function () {
         this._registerViews();
 
         this._model.setupGoogleAPI();
+
+        nmm.runtime.audio.playBgSound('audioSprite', 'music');
     };
 
     return SceneController;

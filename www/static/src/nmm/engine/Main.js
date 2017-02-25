@@ -16,6 +16,8 @@ nmm.engine.Application = (function () {
         nmm.runtime.appSetup.stage.removeChild(this._preloader);
         this._preloader.destroy();
 
+        nmm.runtime.audio = new nmm.engine.AudioManager(nmm.app.audioSprite);
+
         nmm.runtime.scene = new nmm.app.SceneController();
         nmm.runtime.appSetup.stage.addChild(nmm.runtime.scene);
     };

@@ -12,7 +12,7 @@ nmm.engine.AssetsLoader = (function () {
             ss1: ['/assets/images/atlas00@1x.json'],
             ss2: ['assets/images/atlas00@2x.json', 'assets/images/atlas01@2x.json']
         },
-        AUDIOSPRITE = 'assets/sounds/audiosprite.mp3';
+        AUDIOSPRITE = 'assets/sounds/audioSprite.mp3';
 
     function AssetsLoader(callback) {
         self = this;
