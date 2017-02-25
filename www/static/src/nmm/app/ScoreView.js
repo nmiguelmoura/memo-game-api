@@ -62,7 +62,7 @@ nmm.app.ScoreView = (function () {
         this._topTexts.score.setText('');
         this._rankingTexts.playerName.setText('');
         this._rankingTexts.score.setText('');
-        this.tablesReady = 0;
+        this._tablesReady = 0;
     };
 
     p.viewIn = function () {
