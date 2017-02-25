@@ -59,18 +59,21 @@ nmm.app.MenuView = (function () {
             this._btns.forEach(function (btn) {
                 btn.show();
             }, this);
+
+            if (this._loaderOn) {
+                nmm.runtime.appSetup.app.ticker.remove(this._loaderUpdateBound);
+                this.removeChild(this._loader);
+                this._loader.destroy({
+                    children: true,
+                    texture: true
+                });
+                this._loaderOn = false;
+            }
         } else {
             this._loginBtn.show();
             this._btns.forEach(function (btn) {
                 btn.hide();
             }, this);
-
-            nmm.runtime.appSetup.app.ticker.remove(this._loaderUpdateBound);
-            this.removeChild(this._loader);
-            this._loader.destroy({
-                children: true,
-                texture: true
-            });
         }
     };
 
@@ -150,6 +153,8 @@ nmm.app.MenuView = (function () {
         this._loader.anchor.set(0.5);
         this._loader.position.set(512, 638);
         this.addChild(this._loader);
+
+        this._loaderOn = true;
     };
 
     p._init = function () {
