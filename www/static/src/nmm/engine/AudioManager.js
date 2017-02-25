@@ -62,7 +62,6 @@ nmm.engine.AudioManager=(function(){
 
     AudioManager.prototype.playBgSound=function(sprite, sound){
         var frame=this._searchForSound(sound);
-        console.log(frame);
         if(frame) {
             this._bgSound=createjs.Sound.play(sprite,frame);
             this._bgSound.volume = 0.5;
