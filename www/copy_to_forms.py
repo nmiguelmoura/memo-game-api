@@ -1,6 +1,7 @@
 from models import Game_form, Game_list_form, Move_form, Score_form, \
     History_form, Ranking_form, User_profile_form
 
+"""This file holds all the functions that copy data to forms."""
 
 def copy_user_profile_to_form(user_profile):
     usr_pf = User_profile_form()

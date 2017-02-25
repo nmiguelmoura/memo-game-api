@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 from copy_to_forms import copy_user_profile_to_form
 
 class User_handler():
+    """Class that logs user with google account data."""
     def __init__(self):
         pass
 
@@ -11,10 +12,12 @@ class User_handler():
         return user.email()
 
     def check_if_user_exists(self, user):
+        # Check if current user is already registered in datastore User table.
         user_id = self.get_user_id(user)
         u_key = ndb.Key(User, user_id)
         user_profile = u_key.get()
 
+        # If user is not registered, register it.
         if not user_profile:
             user_profile = User(
                 key=u_key,
@@ -34,6 +37,7 @@ class User_handler():
         return copy_user_profile_to_form(user_profile)
 
     def handle_user(self):
+        # Check for current user.
         user = endpoints.get_current_user()
         if not user:
             raise endpoints.UnauthorizedException('Authentication required.')

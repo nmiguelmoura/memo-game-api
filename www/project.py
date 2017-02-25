@@ -61,7 +61,7 @@ rankings_h = rankings_handler.Rankings_handler()
 class Memo_game_API(remote.Service):
     """Memo Game API"""
 
-    # Login a new or existing user
+    # Login a new or existing user.
     @endpoints.method(request_message=REQUEST_USER,
                       response_message=User_profile_form,
                       path="user",
@@ -70,7 +70,7 @@ class Memo_game_API(remote.Service):
     def create_user(self, request):
         return user_h.handle_user()
 
-    # Create a new game
+    # Create a new game.
     @endpoints.method(request_message=REQUEST_NEW_GAME,
                       response_message=Game_form,
                       path="create_new_game",
@@ -79,7 +79,7 @@ class Memo_game_API(remote.Service):
     def create_game(self, request):
         return new_game.create_new_game(request)
 
-    # Get game with web_safe_key
+    # Get game with web_safe_key.
     @endpoints.method(request_message=REQUEST_GET_EXISTING_GAME,
                       response_message=Game_form,
                       path='game/{web_safe_key}',
@@ -88,7 +88,7 @@ class Memo_game_API(remote.Service):
     def get_existing_game(self, request):
         return get_g.get_game_handler(request)
 
-    # Get list of games created by user that are not complete
+    # Get list of games created by user that are not complete.
     @endpoints.method(request_message=message_types.VoidMessage,
                       response_message=Game_list_forms,
                       path='active_games',
@@ -97,7 +97,7 @@ class Memo_game_API(remote.Service):
     def get_active_games(self, request):
         return get_g_list.get_list_handler(request, False)
 
-    # Get list of games created by user that are complete
+    # Get list of games created by user that are complete.
     @endpoints.method(request_message=message_types.VoidMessage,
                       response_message=Game_list_forms,
                       path='get_user_complete_games',
@@ -106,7 +106,7 @@ class Memo_game_API(remote.Service):
     def get_complete_games(self, request):
         return get_g_list.get_list_handler(request, True)
 
-    # Make a move
+    # Make a move.
     @endpoints.method(request_message=REQUEST_MOVE,
                       response_message=Move_form,
                       path='move/{web_safe_key}',
@@ -115,7 +115,7 @@ class Memo_game_API(remote.Service):
     def move(self, request):
         return mk_move.move_handler(request)
 
-    # Get top ten score list
+    # Get top ten score list.
     @endpoints.method(request_message=REQUEST_SCORE,
                       response_message=Score_forms,
                       path='score/{list_length}',
@@ -124,6 +124,7 @@ class Memo_game_API(remote.Service):
     def score(self, request):
         return score_l.score_list_handler(request)
 
+    # Get a complete game history.
     @endpoints.method(request_message=REQUEST_GET_EXISTING_GAME,
                       response_message=History_form,
                       path='history/{web_safe_key}',
@@ -132,6 +133,7 @@ class Memo_game_API(remote.Service):
     def history(self, request):
         return history_h.history_handler(request)
 
+    # Delete a stored and unfinished game.
     @endpoints.method(request_message=REQUEST_GET_EXISTING_GAME,
                       response_message=String_message,
                       path='cancel/{web_safe_key}',
@@ -140,6 +142,7 @@ class Memo_game_API(remote.Service):
     def cancel(self, request):
         return cancel_h.cancel_handler(request)
 
+    # Get ranking.
     @endpoints.method(request_message=message_types.VoidMessage,
                       response_message=Ranking_forms,
                       path='ranking',

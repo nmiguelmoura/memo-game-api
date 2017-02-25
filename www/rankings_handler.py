@@ -4,6 +4,7 @@ from copy_to_forms import copy_ranking_from_list_to_form
 
 
 class Rankings_handler():
+    """This class delivers a list of players ordered by ranking (descend)."""
     def __init__(self):
         pass
 

@@ -2,6 +2,7 @@ from protorpc import messages
 
 from google.appengine.ext import ndb
 
+"""This files holds table and form configuration."""
 
 class User(ndb.Model):
     name = ndb.StringProperty()

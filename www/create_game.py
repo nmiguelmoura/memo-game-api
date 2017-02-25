@@ -7,6 +7,8 @@ from copy_to_forms import copy_game_to_form
 
 
 class Create_game():
+    """Class that handles game creation."""
+
     def __init__(self):
         pass
 
@@ -15,6 +17,7 @@ class Create_game():
         found = []
         limit = None
 
+        # Estabilish a limit based on selected dificulty.
         if level == 'easy':
             limit = 5
         elif level == 'medium':
@@ -25,12 +28,16 @@ class Create_game():
             level = 'easy'
             limit = 5
 
+        # Create a sequence of duplicate values, according to limit.
+        # Also create a list of found values defaultly set to -1, which means
+        # not found.
         for i in range(0, limit):
             sequence.append(i)
             sequence.append(i)
             found.append(-1)
             found.append(-1)
 
+        # Randomize sequence.
         shuffle(sequence)
 
         return {
@@ -41,13 +48,22 @@ class Create_game():
 
 
     def create_new_game(self, request):
+        # Get current user data.
         user = endpoints.get_current_user()
         if not user:
             raise endpoints.UnauthorizedException('Authentication required.')
 
+        # Get user id.
         user_id = user.email()
+
+        # Get user key.
         u_key = ndb.Key(User, user_id)
+
+        # Get new id to game.
+        # Game is a descendant of user.
         game_id = Game.allocate_ids(size=1, parent=u_key)[0]
+
+        # Create game key.
         game_key = ndb.Key(Game, game_id, parent=u_key)
 
         random = self.get_random_tiles(request.level)
@@ -58,6 +74,7 @@ class Create_game():
         score = 0
         creation_date = time.time()
 
+        # Store game and game attributes in datastore.
         game = Game(
             key=game_key,
             user_id=user_id,
@@ -73,6 +90,7 @@ class Create_game():
 
         game.put()
 
+        # Copy newly created game data to form.
         return copy_game_to_form(game)
 
 
