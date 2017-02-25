@@ -1,6 +1,9 @@
 #Memo Game API
 
-API that allows any user to create a memo pair game with three difficulty levels.
+API that allows any user to create a memo pair game with three difficulty levels. A game example is included.
+API and game example are stored in [https://memo-game-api.appspot.com/](https://memo-game-api.appspot.com/).
+
+This is an exercise to show google endpoints capabilities. The game created is a good example of endpoints usage, with all the steps to correctly use endpoints. Due to the nature of endpoints, the game is obviously a bit slow responding to user actions.
 
 ##Features
 - The code runs in Google App Engine with Python using Google endpoints.
@@ -14,6 +17,7 @@ API that allows any user to create a memo pair game with three difficulty levels
 - Through terminal or command line tools, navigate to /www project folder.
 - Run command `dev_appserver.py app.yaml`.
 - Use Google API Explorer running `localhost:8080/_ah/api/explorer` in your browser.
+- Run example game in `localhost:8080`.
 
 ##API methods
 ###create_user
@@ -154,3 +158,6 @@ Path:
 Response (for each player in ranking):
 - **user_name:** string (player nickname)
 - **ranking:** float (from 0 to 1)
+
+##Example game
+The example game was built using [PIXI.js](https://www.google.pt/search?q=pixi.js&oq=pixi.js&aqs=chrome.0.69i59j69i61j0l2j69i60j0.6163j0j4&sourceid=chrome&ie=UTF-8) framework, [GSAP](https://greensock.com/gsap) Animation tools and [soundJS](http://www.createjs.com/soundjs).
