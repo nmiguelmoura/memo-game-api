@@ -3,7 +3,7 @@
 API that allows any user to create a memo pair game with three difficulty levels. A game example is included.
 API and game example are stored in [https://memo-game-api.appspot.com/](https://memo-game-api.appspot.com/).
 
-This is an exercise to show google endpoints capabilities. The game created is a good example of endpoints usage, with all the steps to correctly use endpoints. Due to the nature of endpoints, the game is obviously a bit slow responding to user actions.
+This is an exercise to show google endpoints capabilities. The game created shows endpoints usage, with all the steps to correctly use endpoints. Due to the nature of endpoints, the game is obviously a bit slow responding to user actions and not a typical example of endpoints usage in real life.
 
 ##Features
 - The code runs in Google App Engine with Python using Google endpoints.
