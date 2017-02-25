@@ -2,6 +2,7 @@ nmm.app.ViewManager = (function(){
     'use strict';
 
     function ViewManager(controller){
+        // Manage registered views.
         this._controller = controller;
         this.views = {};
         this.activeView = null;
@@ -11,10 +12,12 @@ nmm.app.ViewManager = (function(){
     var p = ViewManager.prototype;
 
     p._callOut = function (viewName) {
+        // Remove old view from stack.
         this._controller.removeChild(this.getView(viewName));
     };
 
     p.changeActiveView = function (newView) {
+        // Change active view.
         if(this.activeView) {
             this.activeView.animateOut(this._callOutBound);
         }
@@ -31,6 +34,7 @@ nmm.app.ViewManager = (function(){
     };
 
     p.getView = function (name) {
+        // Get view by name.
         if(this.views[name]) {
             return this.views[name];
         } else {
@@ -39,6 +43,7 @@ nmm.app.ViewManager = (function(){
     };
 
     p.registerView = function (view, setActive) {
+        // Register a view.
         var name = view.name;
         if(!this.views[name]) {
             this.views[name] = view;

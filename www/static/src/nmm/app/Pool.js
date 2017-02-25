@@ -2,6 +2,7 @@ nmm.app.Pool = (function(){
     'use strict';
 
     function Pool(maxElements, numTotalCards){
+        // Pool of cards.
         this._pool = [];
         this._maxElements = maxElements;
         this._init(numTotalCards);
@@ -10,6 +11,8 @@ nmm.app.Pool = (function(){
     var p = Pool.prototype;
 
     p.returnToPool = function (object) {
+        // Return a card to pool.
+        // Reset card parameters.
         object.reset();
         object.alpha = 1;
         object.scale.set(1);
@@ -21,6 +24,7 @@ nmm.app.Pool = (function(){
     };
 
     p.borrowFromPool = function () {
+        // Get card from pool.
         if(this._pool.length > 0) {
             return this._pool.pop();
         } else {
@@ -33,6 +37,7 @@ nmm.app.Pool = (function(){
         var i,
             animSprite;
 
+        // Create new cards.
         for(i = 0; i < this._maxElements; i++) {
             animSprite = new nmm.app.Card(numTotalCards);
             animSprite.anchor.set(0.5);

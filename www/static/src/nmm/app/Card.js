@@ -5,10 +5,14 @@ nmm.app.Card = (function () {
         textures;
 
     function Card(numTotalCards) {
+        // Create card object.
+
+        // Load textures.
         this._numTotalCards = numTotalCards;
         if (!textures) {
             this._getTextures();
         }
+        // Extend AnimatedSprite class.
         PIXI.extras.AnimatedSprite.call(this, textures);
         this.gotoAndStop(this._numTotalCards - 1);
         this.btn = null;
@@ -28,6 +32,7 @@ nmm.app.Card = (function () {
     };
 
     p.reset = function (animated) {
+        // Turn card so it hides figure.
         var key = this._numTotalCards;
         if(animated) {
             this.turnCard(key);
@@ -37,13 +42,16 @@ nmm.app.Card = (function () {
     };
 
     p.showFrame = function (key) {
+        // Show figure.
         this.turnCard(key);
     };
 
     p.turnCard = function (key) {
+        // Animate card turn.
         var cardScale = this.scale.x;
         TweenLite.to(this.scale, 0.25, {x: 0});
         TweenLite.delayedCall(0.25, function () {
+            // Swap texture when scale is 0.
             this.gotoAndStop(key);
         }, [], this);
         TweenLite.to(this.scale, 0.25, {x: cardScale, delay: 0.25});
@@ -51,9 +59,10 @@ nmm.app.Card = (function () {
 
     p._getTextures = function () {
         var i;
-
         textures = [];
 
+        // Get all available texture.
+        // Figures plus question mark.
         for (i = 0; i < this._numTotalCards; i++) {
             textures.push(PIXI.Texture.fromFrame('card-' + i));
         }
@@ -61,6 +70,7 @@ nmm.app.Card = (function () {
     };
 
     p._addBtn = function () {
+        // Add button to AnimatedSprite.
         if(!btnTexture) {
          var graph = new PIXI.Graphics();
             graph.beginFill(0xFF0000, 0)

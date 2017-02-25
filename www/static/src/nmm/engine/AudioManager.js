@@ -5,23 +5,25 @@ nmm.engine.AudioManager=(function(){
 
     function AudioManager(audioSpriteData){
         self=this;
-        //guardar o id do som de fundo
+        // var to store background sound.
         this._soundBg=null;
 
-        //guardar o id do som fx
+        // var to store fx sound.
         this._soundFX=null;
 
-        //guardar o objeto Sound do createjs
+        // store sound object.
         this._sound=null;
+
+        // Data from audiosprite.
         this._audioSpriteData=audioSpriteData;
     }
 
     AudioManager.prototype._searchForSound=function(sound){
         var i,length=this._audioSpriteData.length;
 
-        //procurar o id no array
+        // Check if frame id exists.
         for(i=0;i<length;i++){
-            //Se encontrar o ID, devolver o frame
+            // If frame exists, return data.
             if(sound===this._audioSpriteData[i].id){
                 return this._audioSpriteData[i];
             }
@@ -30,37 +32,42 @@ nmm.engine.AudioManager=(function(){
     };
 
     AudioManager.prototype.stopSound=function(){
+        // Stop all fx sounds.
         if(this._soundFX){
             this._sound.stop();
         }
     };
 
     AudioManager.prototype.playSound=function(sprite,sound,callback){
-        //protecao contra o esquecimento do callback
+        // Callback after sound play finishes.
         callback=callback||function(){};
 
-        //procurar o som
+        // Search for sound data.
         var frame=this._searchForSound(sound);
-        //iniciar playback se o som existir
+
+        // Play sound if data exists in audio sprite sheet.
         if(frame){
-            //se o som esta em playback, tem que ser desligado para evitar sobreposicao
+            // Stop sound if already playing.
             if(this._soundFX){
                 this._sound.stop();
             }
 
-            //tocar o novo som
+            // Play new sound.
             this._soundFX=sound;
             this._sound=createjs.Sound.play(sprite,frame);
             this._sound.on('complete',function(){
-                //quando o som termina, limpar a variavel _soundFX para se saber que nada esta em playback
+                // Clear var _soundFX after playback is finished.
                 self._soundFX=null;
-                //chamar o objeto que originou o som
+                // Callback function after playback is finished.
                 callback();
             })
         }
     };
 
     AudioManager.prototype.playBgSound=function(sprite, sound){
+        // Play background sound.
+
+        // Check if frame exists in sprite and play it.
         var frame=this._searchForSound(sound);
         if(frame) {
             this._bgSound=createjs.Sound.play(sprite,frame);

@@ -19,7 +19,7 @@ nmm.app.MenuView = (function () {
     var p = MenuView.prototype;
 
     p.animateOut = function (callback) {
-        //do stuff
+        // Hide btns on out.
         this._btns.forEach(function (btn) {
             btn.hide();
         });
@@ -47,14 +47,12 @@ nmm.app.MenuView = (function () {
         }
     };
 
-    p.viewIn = function () {
-
-    };
-
     p.checkStatus = function () {
+        // Check if user is logged.
         var isUserLogged = this._controller.isUserLogged();
 
         if (isUserLogged) {
+            // If user is logged, show options and remove loader.
             this._loginBtn.hide();
             this._btns.forEach(function (btn) {
                 btn.show();
@@ -70,6 +68,7 @@ nmm.app.MenuView = (function () {
                 this._loaderOn = false;
             }
         } else {
+            // If user is not logged, show login button.
             this._loginBtn.show();
             this._btns.forEach(function (btn) {
                 btn.hide();
@@ -78,6 +77,7 @@ nmm.app.MenuView = (function () {
     };
 
     p._addOptions = function () {
+        // Add text options.
         this._optionsContainer = new PIXI.Container();
 
         var btns = this._controller.getInfo(this.name).btns,
@@ -114,6 +114,7 @@ nmm.app.MenuView = (function () {
     };
 
     p._addLoginBtn = function () {
+        // Add login button.
         this._loginBtn = new nmm.uiPIXI.TexturedBtn({
             fillTexture: PIXI.Texture.fromFrame('btn-log'),
             shadowTexture: PIXI.Texture.fromFrame('btn-log-shadow'),
@@ -131,6 +132,7 @@ nmm.app.MenuView = (function () {
     };
 
     p._addTitle = function () {
+        // Add title.
         var title = new PIXI.Container();
 
         var t0 = new PIXI.Sprite.fromFrame('title-0');
@@ -145,10 +147,12 @@ nmm.app.MenuView = (function () {
     };
 
     p._loaderUpdate = function () {
+        // Update loader rotation.
         this._loader.rotation += 0.02;
     };
 
     p._addLoader = function () {
+        // Add loader to menu.
         this._loader = new PIXI.Sprite(PIXI.Texture.fromFrame('loader'));
         this._loader.anchor.set(0.5);
         this._loader.position.set(512, 638);

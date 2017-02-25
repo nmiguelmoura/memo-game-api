@@ -179,7 +179,7 @@ nmm.app.Model = (function () {
 
     var p = Model.prototype;
 
-    //get rankings
+    // Get rankings.
     p.getRankings = function () {
         gapi.client.memo_game.get_user_ranking()
             .execute(function (resp) {
@@ -188,7 +188,7 @@ nmm.app.Model = (function () {
             });
     };
 
-    //get top score
+    // Get top score.
     p.getTopScore = function () {
         gapi.client.memo_game.get_high_scores({
             'list_length': 15
@@ -198,7 +198,7 @@ nmm.app.Model = (function () {
         });
     };
 
-    //get game history
+    // Get game history.
     p.getGameHistory = function (web_safe_key) {
         gapi.client.memo_game.get_game_history({
             'web_safe_key': web_safe_key
@@ -212,7 +212,7 @@ nmm.app.Model = (function () {
         });
     };
 
-    //delete game
+    // Delete game.
     p.deleteGame = function (web_safe_key) {
         gapi.client.memo_game.cancel_game({
             'web_safe_key': web_safe_key
@@ -222,7 +222,7 @@ nmm.app.Model = (function () {
         });
     };
 
-    //load game
+    // Load game.
     p.loadGame = function (web_safe_key) {
         gapi.client.memo_game.get_game({
             'web_safe_key': web_safe_key
@@ -233,7 +233,7 @@ nmm.app.Model = (function () {
         });
     };
 
-    //get finished games
+    // Get finished games.
     p.getFinishedGames = function () {
         gapi.client.memo_game.get_user_complete_games()
             .execute(function (resp) {
@@ -242,7 +242,7 @@ nmm.app.Model = (function () {
             });
     };
 
-    //get unfinished games
+    // Get unfinished games.
     p.getUnfinishedGames = function () {
         gapi.client.memo_game.get_user_games()
             .execute(function (resp) {
@@ -251,8 +251,7 @@ nmm.app.Model = (function () {
             });
     };
 
-    //make a move
-
+    // Make a move.
     p.updateMoveRecord = function (move_one, move_two) {
         if (!this.game.current.move_record) {
             this.game.current.move_record = [];
@@ -278,8 +277,7 @@ nmm.app.Model = (function () {
         });
     };
 
-    //create a new game
-
+    // Create a new game.
     p.createGame = function (level) {
         var levels = ['easy', 'medium', 'hard'];
         level = levels[level];
@@ -292,9 +290,9 @@ nmm.app.Model = (function () {
         });
     };
 
-    //oauth2
-
+    // Oauth2.
     p.retrieveProfileCallback = function () {
+        // Store user profile in datastore.
         gapi.client.memo_game.create_user().execute(function (resp) {
                 console.log(resp);
                 self._controller.loginSuccessfull();
@@ -303,16 +301,17 @@ nmm.app.Model = (function () {
     };
 
     p.userAuthed = function () {
+        // Get user info.
         var request = gapi.client.oauth2.userinfo.get().execute(function (resp) {
             if (!resp.code) {
                 self.isUserLogged = true;
-                //s_btn.innerHTML = 'Sign out';
                 self.retrieveProfileCallback(self);
             }
         });
     };
 
     p.signin = function (mode, callback) {
+        // Sign in user.
         gapi.auth.authorize({
                 client_id: CLIENT_ID,
                 scope: SCOPES, immediate: mode
@@ -321,6 +320,7 @@ nmm.app.Model = (function () {
     };
 
     p.auth = function () {
+        // Start authorization process
         if (!this.isUserLogged) {
             this.signin(false, this.userAuthed.bind(self));
         } else {

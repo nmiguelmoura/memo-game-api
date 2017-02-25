@@ -34,10 +34,12 @@ nmm.app.DifficultyView = (function(){
     };
 
     p._click = function (key) {
+        // Caal controller with selected difficulty.
         this._controller.createGame(key);
     };
 
     p._addOptions = function () {
+        // Add text buttons.
         var btns = this._controller.getInfo(this.name).btns,
             btn,
             style = {

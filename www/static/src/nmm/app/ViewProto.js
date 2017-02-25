@@ -5,6 +5,7 @@ nmm.app.ViewProto = (function(){
     'use strict';
 
     function ViewProto(name){
+        // This class is a base for views. All views inherit from this one.
         PIXI.Container.call(this);
         this.name = name;
         this.alpha = 0;

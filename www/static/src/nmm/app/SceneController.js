@@ -87,21 +87,21 @@ nmm.app.SceneController = (function () {
 
     p.movePosted = function (data) {
         console.log(data.result);
-        //update card
+        // Update card.
         if (data.move_two_key === "-1") {
-            //only one card turned
+            // Only one card turned.
             this._gameView.turnCard(0, parseInt(data.move_one_key));
         } else {
-            //two cards turned
+            // Two cards turned.
             this._gameView.turnCard(1, parseInt(data.move_two_key));
             this._gameView.updateValues(data.score, this._model.game.current.move_record.length / 2);
 
-            //check if guessed
+            // Check if guessed.
             if (data.guessed) {
                 nmm.runtime.audio.playSound('audioSprite', 'correct');
                 this._gameView.markMoveCardsAsGuessed();
 
-                //check if complete
+                // Check if complete.
                 if (data.complete) {
                     TweenLite.delayedCall(1, function () {
                         this._gameView.gameOver();
@@ -165,9 +165,9 @@ nmm.app.SceneController = (function () {
     };
 
     p._registerViews = function () {
-        //view manager
+        // Register all views.
         this._viewManager = new nmm.app.ViewManager(this);
-        //menu
+
         this._menuView = new nmm.app.MenuView(this, 'menu');
         this._viewManager.registerView(this._menuView, true);
 
@@ -187,14 +187,17 @@ nmm.app.SceneController = (function () {
     p._init = function () {
         this._model = new nmm.app.Model(this);
 
+        // Add cards pool.
         this._pool = new nmm.app.Pool(this._model.poolMaxElements, this._model.game.numTotalCards);
 
         var bg = new nmm.app.Bg(this._pool, this._model.bg, this._model.game.numTotalCards);
         this.addChild(bg);
         this._registerViews();
 
+        // Setup Google API.
         this._model.setupGoogleAPI();
 
+        // Play bg music.
         nmm.runtime.audio.playBgSound('audioSprite', 'music');
     };
 

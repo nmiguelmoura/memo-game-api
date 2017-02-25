@@ -21,29 +21,25 @@ nmm.tools.Resize=(function(){
     var scaleX = this._size.windowWidth / this._default.w,
         scaleY = this._size.windowHeight / this._default.h;
 
-    //a menor escala e escolhida
+    // Choose minor scale value.
     this._scale=Math.min(scaleX,scaleY);
 
     this._scale = this._scale <= 1 ? this._scale : 1;
 
-    //e necessario arredondar os valores, caso contrario o firefox e o chrome ficam ligeiramente desfocados
+    // Round values, or firefox and chrome render blurred images.
     this._size.width=Math.floor(this._default.w*this._scale);
     this._size.height=Math.floor(this._default.h*this._scale);
 
-    //definir o tamanho do renderer
+    // Set render size.
     this._renderer.resize(this._size.width,this._size.height);
 
-    //escalar o stage
+    // Scale scene stage.
     this._stage.scale.x=this._scale;
     this._stage.scale.y=this._scale;
-
-    //calcular o tamanho da app para guardar
-
-
   };
 
   Resize.prototype._canvasAlignment=function(){
-    //alinhar ao centro do ecra
+    // Align app on the centre of scree.
     this._margin={};
     this._margin.x=(this._size.windowWidth-this._size.width)/2;
     this._margin.y=(this._size.windowHeight-this._size.height)/2;
@@ -52,31 +48,31 @@ nmm.tools.Resize=(function(){
   };
 
   Resize.prototype._storeValues=function(){
-    //guardar o tamanho da janela do dispositivo
+    // Store window dimensions.
     nmm.runtime.dimensions = nmm.runtime.dimensions || {};
     nmm.runtime.dimensions.windowWidth=this._size.windowWidth;
     nmm.runtime.dimensions.windowHeight=this._size.windowHeight;
 
-    //gaurdar o tamanho da aplicacao
+    // Store app dimensions.
     nmm.runtime.dimensions.scaledWidth=this._size.width;
     nmm.runtime.dimensions.scaledHeight=this._size.height;
 
-    //guardar as margens
+    // Store margin values.
     nmm.runtime.dimensions.marginLeft=this._margin.x;
     nmm.runtime.dimensions.marginTop=this._margin.y;
 
-    //guardar o valor de escala
+    // Store scale value.
     nmm.runtime.dimensions.scale=this._scale;
   };
 
   Resize.prototype.resize=function(){
-    //escalar o stage e o renderer
+    // Render and stage scale.
     this._canvasResize();
 
-    //alinhar o canvas
+    // Align app to the center of the scree.
     this._canvasAlignment();
 
-    //guardar valores
+    // store values.
     this._storeValues();
 
     this._renderer.render(this._stage);
@@ -84,6 +80,8 @@ nmm.tools.Resize=(function(){
 
   Resize.prototype._init=function(){
     this._resizeBound = this.resize.bind(this);
+
+    // Add event to resize app everytime the window is resized.
     window.addEventListener('resize',this._resizeBound);
     this.resize();
   };

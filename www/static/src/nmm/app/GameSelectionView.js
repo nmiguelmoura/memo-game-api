@@ -15,6 +15,7 @@ nmm.app.GameSelectionView = (function () {
     var p = GameSelectionView.prototype;
 
     p.clear = function () {
+        // Clear all elements from view.
         this._elements.forEach(function (element) {
             this.removeChild(element);
             element.disable();
@@ -22,11 +23,13 @@ nmm.app.GameSelectionView = (function () {
     };
 
     p.update = function (data) {
+        // Update list with data passed.
         if (!data) {
             this._infoText.setText('There are no games stored.');
         } else {
             this._infoText.setText('');
 
+            // Consider only first 5 results.
             if (data.length > 5) {
                 data.splice(5, data.length - 1);
             }
@@ -38,6 +41,7 @@ nmm.app.GameSelectionView = (function () {
 
             for (i = 0; i < length; i++) {
                 if (i > elementsLimit) {
+                    // Create new element object.
                     element = this._createElement();
                     this._elements.push(element);
                 } else {
@@ -74,6 +78,7 @@ nmm.app.GameSelectionView = (function () {
     };
 
     p._addInfoText = function () {
+        // Add text to inform the user no games are available.
         var style = {
             fontFamily: 'Arial',
             fontSize: '20px',

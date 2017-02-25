@@ -1,3 +1,5 @@
+// Audio sprite data.
+
 nmm.app.audioSprite = [
     {
         id: "silence",

@@ -17,12 +17,15 @@ nmm.app.ScoreView = (function () {
 
     p._incrementTableReady = function () {
         this._tablesReady ++;
+
+        // Check  if both tables have loaded.
         if(this._tablesReady === 2) {
             this._controller.scoreReady();
         }
     };
 
     p._fillTable = function (textObj, data, ranking) {
+        // Fill table (score or ranking) width data passed.
         var i,
             length = data.length,
             name = '',
@@ -45,6 +48,9 @@ nmm.app.ScoreView = (function () {
     };
 
     p.updateRanking = function (data) {
+        // Update ranking values.
+
+        // Consider only first 15 values.
         if(data.length > 15) {
             data.splice(15, data.length - 1);
         }
@@ -53,20 +59,18 @@ nmm.app.ScoreView = (function () {
     };
 
     p.updateScore = function (data) {
+        // Update score values.
         this._incrementTableReady();
         this._fillTable(this._topTexts, data);
     };
 
     p.viewOut = function () {
+        // Clear all texts on out.
         this._topTexts.playerName.setText('');
         this._topTexts.score.setText('');
         this._rankingTexts.playerName.setText('');
         this._rankingTexts.score.setText('');
         this._tablesReady = 0;
-    };
-
-    p.viewIn = function () {
-
     };
 
     p._addColumn = function (width, data, obj) {
@@ -114,7 +118,11 @@ nmm.app.ScoreView = (function () {
 
     p._init = function () {
         var data = this._controller.getInfo(this.name).info;
+
+        // Add score column.
         this._addColumn(data.width, data.column0, this._topTexts);
+
+        // Add ranking column.
         this._addColumn(data.width, data.column1, this._rankingTexts);
     };
 

@@ -26,12 +26,14 @@ nmm.engine.AssetsLoader = (function () {
     }
 
     AssetsLoader.prototype._checkFirstSoundsAndAtlas = function () {
+        // Check if all assets have loaded.
         if (this._assetsLoaded.sound && this._assetsLoaded.atlas) {
             this._callback();
         }
     };
 
     AssetsLoader.prototype._loadGraphics = function () {
+        // Load textures.
         this._loader = PIXI.loader;
         nmm.runtime.appSetup.loader = this._loader;
 
@@ -48,6 +50,7 @@ nmm.engine.AssetsLoader = (function () {
     };
 
     AssetsLoader.prototype._loadAudioSprite = function () {
+        // Load audio with soundjs.
         createjs.Sound.on('fileload', function () {
             self._assetsLoaded.sound = true;
             self._checkFirstSoundsAndAtlas();
@@ -56,7 +59,10 @@ nmm.engine.AssetsLoader = (function () {
     };
 
     AssetsLoader.prototype._init = function () {
+        // Load audio.
         this._loadAudioSprite();
+
+        // Load graphics.
         this._loadGraphics();
     };
 

@@ -28,10 +28,12 @@ nmm.app.GameListElement = (function(){
     };
 
     p.update = function (data, i) {
+        // Update element.
         this._mainText.setText('Game ' + i);
         this._valueTexts[0].setText(data.score);
         this._valueTexts[0].setText(data.score);
 
+        // Show icons according to game completion status.
         if(data.complete) {
             this._btns[PLAY].show();
         } else {
@@ -131,6 +133,7 @@ nmm.app.GameListElement = (function(){
     p._init = function () {
         this._clickBound = this._click.bind(this);
 
+        // Create graphical elements and text.
         this._addGraph();
         this._addMainText();
         this._addSecondaryTexts();

@@ -3,17 +3,15 @@ nmm.uiPIXI.TexturedBtn=(function(){
 
     function TexturedBtn(args){
         PIXI.Container.call(this);
-        //sombra para desaparecer/aparecer quando o botao e clicado
+        // Shadow to show / hide on button click.
         this._shadowTexture=args.shadowTexture||null;
-        //textura principal do botao
+        // Primary fill texture.
         this._fillTexture=args.fillTexture||null;
 
-        //textura secundaria para o botao
+        // Secondary fill texture (if needed).
         this._secondaryFillTexture = args.secondaryFillTexture||null;
-        
-        
 
-        //controlo de textura ativa
+        // Store active texture (primary and secondary).
         this._activeTexture = 'primary';
 
         this._x=args.x||0;
@@ -21,13 +19,13 @@ nmm.uiPIXI.TexturedBtn=(function(){
 
         this._defaultCursor=args.defaultCursor;
 
-        //offset para a sombra, caso exista
+        // Shadow offset, if needed.
         this._shadowOffsetX=args.shadowOffsetX||0;
         this._shadowOffsetY=args.shadowOffsetY||0;
 
         this._key=args.key||0;
 
-        //esconder o botao apos clique
+        // Hide button after click.
         this._autoHide=args.autoHide;
         if(this._autoHide===undefined){
             this._autoHide=true;
@@ -37,10 +35,10 @@ nmm.uiPIXI.TexturedBtn=(function(){
 
         this._callback=args.callback||function(){};
 
-        //os botoes inicializam ja com eventos ou nao
+        // Add events on button initialization.
         this._startInteractive=args.startInteractive===undefined?true:args.startInteractive;
 
-        //escala da sprite
+        // Texture scale.
         this._scale=args.scale||0.5;
         this.scale.set(this._scale);
 
@@ -56,11 +54,11 @@ nmm.uiPIXI.TexturedBtn=(function(){
         destroyTexture=destroyTexture===true;
         this.removeListeners();
 
-        //tentar remover o botao do stage
+        // Try to remove button from stage.
         try{
             this.parent.removeChild(this);
         }catch(error){
-            //nao fazer nada
+            // Do nothing.
         }
 
         this._x=null;
@@ -80,10 +78,12 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype.tintBtn=function(color){
+        // Tint button.
         this._fillSprite.tint=color;
     };
 
     TexturedBtn.prototype.show=function(){
+        // Show btn and add listeners.
         if(!this.visible){
             this.visible=true;
             this.addListeners();
@@ -91,6 +91,7 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype.hide=function(){
+        // Hide btn and remove listeners.
         if(this.visible){
             this.visible=false;
             this.buttonMode=false;
@@ -99,12 +100,13 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype._touchEndOutside=function(){
-        //se tiver sido fornecida textura de sombra, voltar a mostrar aqui
-        //a sombra tinha sido escondida no _downHandler
+        // If shadow has been provided, show it.
+        // Shadow as been hidden in _downHandler.
         if(this._shadowSprite){
             this._shadowSprite.visible=true;
         }
 
+        // Remove up end touchEndoutside events.
         this.off('mouseup',this._upHandler);
         this.off('touchend',this._upHandler);
         this.off('touchendoutside',this._touchEndOutside);
@@ -112,18 +114,21 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype._upHandler=function(event){
-        //se tiver sido fornecida textura de sombra, voltar a mostrar aqui
-        //a sombra tinha sido escondida no _downHandler
+        // If shadow has been provided, show it.
+        // Shadow as been hidden in _downHandler.
         if(this._shadowSprite){
             this._shadowSprite.visible=true;
         }
 
-        //caso o botao deva desaparecer apos a interaçao, esconde-lo
+        // Check if button has to be hidden after click.
         if(this._autoHide){
             this.hide();
         }
 
+        // Callback function.
         this._callback(this._key,'up', event);
+
+        // Remove up end touchEndoutside events.
         this.off('mouseup',this._upHandler);
         this.off('touchend',this._upHandler);
         this.off('touchendoutside',this._touchEndOutside);
@@ -131,19 +136,20 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype._downHandler=function(event){
-        //se houver sombra, esconder
+        // If shadow has been provided, hide it.
         if(this._shadowSprite){
             this._shadowSprite.visible=false;
         }
 
         this.on('mouseup',this._upHandler,false);
         this.on('touchend',this._upHandler,false);
-        //touchendoutside para evitar que o utilizador faca down e depois retire o dedo para o lado
-        //nesses casos nao ha evento up
-        //evita-se que a sombra continue escondida e que o evento up continue on
+        // Touchendoutside to avoid down event and remove finger to the side.
+        // No event up launched in those cases
+        // Avoid shadow hidden and up event continuously being listened.
         this.on('touchendoutside',this._touchEndOutside,false);
         this.on('mouseupoutside',this._touchEndOutside,false);
 
+        // Report callback for mouse down events.
         if(this._trackMouseDown){
             this._callback(this._key,'down');
         }
@@ -174,7 +180,7 @@ nmm.uiPIXI.TexturedBtn=(function(){
             this.defaultCursor=this._defaultCursor;
         }
 
-        //so adicionar os listeners se a variavel _startInteractive for true
+        // Add listeners on initialization.
         if(this._startInteractive){
             this.addListeners();
         }
@@ -185,6 +191,7 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype.switchTexture = function (type) {
+        // Switch texture from primary to secondary and vice-versa.
         if(type === 'primary') {
             this._fillSprite.texture = this._fillTexture;
             this._activeTexture = 'primary';
@@ -198,68 +205,45 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype.updateFillTexture=function(texture){
-        //obter nova textura
+        // Get new texture.
         this._fillTexture=this._getFillTexture(texture);
 
-        //aplicar textura ao sprite existente
+        // Apply texture to sprite.
         this._fillSprite.texture=this._fillTexture;
     };
 
     TexturedBtn.prototype.updateSecondaryFillTexture=function(texture){
-        //obter nova textura
+        // Get new texture.
         this._secondaryFillTexture=this._getFillTexture(texture);
     };
 
     TexturedBtn.prototype._getFillTexture=function(texture){
-        //apenas correr se a textura nao for nula
+        // Run only if texture is not null.
         if(texture!==null){
-            //se for passado apenas o nome do frame, converter para textura
-            if(typeof texture==='string'){
-                texture=nmm.observer.spriteSheetDealer.getTexture(texture);
-                //texture=PIXI.Texture.fromFrame(texture);
-            }
-
-            //devolver o valor da textura
+            // Return texture.
             return texture;
         }
         else{
-            //nao foi indicada textura ERRO
-            throw new Error('Não foi indicada textura para o botão.');
+            // No texture has been provided.
+            throw new Error('No texture has been provided.');
         }
     };
 
     TexturedBtn.prototype._buildBtn=function(){
         if(this._fillTexture!==null){
-            //verificar a textura - se existe, se é apenas o nome do frame ou se já e a texture
-            if(typeof this._fillTexture==='string'){
-                this._fillTexture=nmm.observer.spriteSheetDealer.getTexture(this._fillTexture);
-            }
-
-            //aplicar a textura a sprite
+            // APply texture to sprite.
             this._fillSprite=new PIXI.Sprite(this._fillTexture);
             this._fillSprite.anchor.set(0.5);
             this.addChild(this._fillSprite);
         }
         else{
-            //nao foi indicada textura ERRO
-            throw new Error('Não foi indicada textura para o botão.');
-        }
-    };
-
-    TexturedBtn.prototype._buildSecondaryFillTexture = function () {
-        //se for passado apenas o nome do frame, converter para textura
-        if(typeof this._secondaryFillTexture==='string'){
-            this._secondaryFillTexture=nmm.observer.spriteSheetDealer.getTexture(this._secondaryFillTexture);
+            // No texture has been provided.
+            throw new Error('No texture has been provided.');
         }
     };
 
     TexturedBtn.prototype._buildShadow=function(){
-        //se for passado apenas o nome do frame, converter para textura
-        if(typeof this._shadowTexture==='string'){
-            this._shadowTexture=nmm.observer.spriteSheetDealer.getTexture(this._shadowTexture);
-        }
-
-        //aplicar a textura a sprite -> esta e para ser utilizada apenas se houver sombra no botao
+        // Apply shadow to sprite.
         this._shadowSprite=new PIXI.Sprite(this._shadowTexture);
         this._shadowSprite.anchor.set(0.5);
         this._shadowSprite.position.set(this._shadowOffsetX, this._shadowOffsetY);
@@ -267,20 +251,15 @@ nmm.uiPIXI.TexturedBtn=(function(){
     };
 
     TexturedBtn.prototype._init=function(){
-        //se existir textura para a sombra, construir o sprite
+        // Run if shadow has been provided.
         if(this._shadowTexture){
             this._buildShadow();
         }
 
-        //se existir textura secundaria
-        if(this._secondaryFillTexture) {
-            this._buildSecondaryFillTexture();
-        }
-
-        //construir o sprite do botao
+        // Build sprite btn.
         this._buildBtn();
 
-        //tornar o botao interativo
+        // Make interactive.
         this._startInteractivity();
     };
 

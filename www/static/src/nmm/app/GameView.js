@@ -18,6 +18,7 @@ nmm.app.GameView = (function () {
     var p = GameView.prototype;
 
     p.gameOver = function () {
+        // Show completion graphics on game complete.
         this._greatSign.alpha = 0;
         this._greatSign.rotation = 0;
         this._greatSign.scale.set(2);
@@ -28,6 +29,7 @@ nmm.app.GameView = (function () {
     };
 
     p.enableRemainingCards = function () {
+        // Enable only the cards that havent been found.
         this._cards.forEach(function (card) {
             if (!card.guessed) {
                 card.btn.show();
@@ -36,6 +38,7 @@ nmm.app.GameView = (function () {
     };
 
     p.markMoveCardsAsGuessed = function () {
+        // Run when user guessed.
         var cardOneKey = this._cardsTurned[0],
             cardTwoKey = this._cardsTurned[1];
 
@@ -45,6 +48,7 @@ nmm.app.GameView = (function () {
     };
 
     p.resetLastMove = function () {
+        // Reset pair of cards.
         var cardOneKey = this._cardsTurned[0],
             cardTwoKey = this._cardsTurned[1];
 
@@ -59,6 +63,7 @@ nmm.app.GameView = (function () {
     };
 
     p.disableAllCards = function () {
+        // Disable click on all cards.
         this._cards.forEach(function (card) {
             card.btn.hide();
         });
@@ -70,6 +75,7 @@ nmm.app.GameView = (function () {
     };
 
     p._distributeCards = function (tiles_found, cardDistribution, playMode) {
+        // Put cards in position.
         var i,
             length = cardDistribution.numCards,
             card,
@@ -78,16 +84,20 @@ nmm.app.GameView = (function () {
 
         for (i = 0; i < length; i++) {
             if (playMode) {
+                // If on play mode, all cards are initially hiden.
                 tile = "-1";
             } else {
                 tile = tiles_found[i];
             }
+
             pos = cardDistribution.disposal[i];
             card = this._pool.borrowFromPool();
             if (tile === "-1") {
                 card.reset();
                 card.btn.show();
             } else {
+                // Show figure if card has already been found. Usefull
+                // when loading an unfinished game.
                 card.gotoAndStop(tile);
                 card.guessed = true;
             }
@@ -95,6 +105,8 @@ nmm.app.GameView = (function () {
             card.callback = this._clickBound;
             card.scale.set(cardDistribution.scale);
             card.position.set(512, 900);
+
+            // Animate card entrance.
             TweenLite.to(card, 1, {x: pos.x, y: pos.y, delay: i * 0.05});
             this._cards.push(card);
             this.addChild(card);
@@ -102,18 +114,20 @@ nmm.app.GameView = (function () {
     };
 
     p.updateValues = function (score, moves) {
+        // Update stats.
         this._values.score.setText(score);
         this._values.moves.setText(moves);
     };
 
     p.update = function (data, cardDistribution) {
+        // Udpate cards and stats.
         this.updateValues(data.score, data.move_record ? data.move_record.length / 2 : 0);
         this._distributeCards(data.tiles_found, cardDistribution);
         this._cardsTurned = [];
     };
 
     p.playMoves = function (history) {
-        console.log(history);
+        // Run only when showing game history.
         var i,
             length = history.length,
             h,
@@ -122,10 +136,13 @@ nmm.app.GameView = (function () {
         for (i = 0; i < length; i++) {
             h = history[i];
             delay = 1.5 + i * 2;
+
+            // Turn cards on pairs.
             TweenLite.delayedCall(delay, function (h) {
                 this._cards[h.move_one].turnCard(h.move_one_key);
                 this._cards[h.move_two].turnCard(h.move_two_key);
 
+                // If cards dont match, reset them.
                 if (!h.guessed) {
                     TweenLite.delayedCall(1, function (h) {
                         this._cards[h.move_one].reset(true);
@@ -142,14 +159,14 @@ nmm.app.GameView = (function () {
     };
 
     p.playMode = function (score, history, cardDistribution) {
+        // Run only when showing game history.
         this.updateValues(score, history.length);
         this._distributeCards([], cardDistribution, true);
         this.playMoves(history);
     };
 
     p.animateOut = function (callback) {
-        //do stuff
-
+        // Remove all cards from view.
         this._cards.forEach(function (card) {
             this.removeChild(card);
             this._pool.returnToPool(card);
@@ -162,17 +179,15 @@ nmm.app.GameView = (function () {
         this.removeChild(this._greatSign);
     };
 
-    p.viewIn = function () {
-
-    };
-
     p._addGreatSign = function () {
+        // Add graphic to display at the end of the game.
         this._greatSign = new PIXI.Sprite(PIXI.Texture.fromFrame('great'));
         this._greatSign.anchor.set(0.5);
         this._greatSign.position.set(512, 384);
     };
 
     p._addStats = function () {
+        // Add score and move info.
         var stats = new PIXI.Container();
 
         var info = this._data.info,

@@ -12,6 +12,7 @@ nmm.tools.Preloader = (function(){
     var p = Preloader.prototype;
 
     p.destroy = function () {
+        // Destroy preloader after use.
         nmm.runtime.appSetup.app.ticker.remove(this._onFrameUpdateBound);
         this.removeChildren();
 
@@ -31,10 +32,12 @@ nmm.tools.Preloader = (function(){
     };
 
     p._onFrameUpdate = function () {
+        // Rotate graph in every tick.
         this._icon.rotation += 0.02;
     };
 
     p._addText = function () {
+        // Add preloader text.
         var style = {
             font:'28px Arial',
             fill: '#FFFFFF'
@@ -47,6 +50,7 @@ nmm.tools.Preloader = (function(){
     };
 
     p._addGraph = function () {
+        // Add preloader graphics.
         this._icon = new PIXI.Graphics ();
         this._icon.beginFill(0xFFFFFF, 1)
             .drawCircle(0, -40, 5)
@@ -75,6 +79,7 @@ nmm.tools.Preloader = (function(){
         this._addGraph();
         this._addText();
 
+        // Add update function to ticker.
         this._onFrameUpdateBound = this._onFrameUpdate.bind(this);
         nmm.runtime.appSetup.app.ticker.add(this._onFrameUpdateBound);
     };
