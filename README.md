@@ -131,7 +131,8 @@ Parameters:
 Response:
 - **move_one_key:** integer (corresponds to the key in game sequence that
 matchs the move_one position)
-- **move_two_key:** integer (corresponds to the key in game sequence thatmatchs the move_two position)
+- **move_two_key:** integer (corresponds to the key in game sequence that
+matchs the move_two position)
 - **guessed:** boolean (responds True if user guessed or False if not)
 - **score:** integer (returns game score after move)
 - **complete:** boolean (False for incomplete game, True for complete)
