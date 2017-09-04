@@ -397,7 +397,6 @@ nmm.app.Model = (function () {
 
     p.getPlayerName = function () {
         var playerName = localStorage.getItem('playerName');
-        console.log(playerName);
         if (playerName) {
             tempName = playerName;
             return playerName;
