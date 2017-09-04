@@ -46,7 +46,8 @@ nmm.engine.Application = (function () {
         var resolution = window.devicePixelRatio;
         var app = new PIXI.Application(WIDTH, HEIGHT, {
             resolution: window.devicePixelRatio,
-            autoResize: true
+            autoResize: true,
+            backgroundColor: 0x5B265F
         });
 
         var renderer = app.renderer;

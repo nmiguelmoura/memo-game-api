@@ -52,7 +52,6 @@ nmm.app.SceneController = (function () {
     };
 
     p.gameDataLoaded = function (data) {
-        console.log(data);
         this._gameView.update(data, this._model.game[data.level]);
     };
 
@@ -94,7 +93,6 @@ nmm.app.SceneController = (function () {
         } else {
             // Two cards turned.
             this._gameView.turnCard(1, parseInt(data.move_two_key));
-            console.log(this._model.game.current.move_record);
             this._gameView.updateValues(data.score, this._model.game.current.move_record.length / 2);
 
             // Check if guessed.
@@ -133,7 +131,6 @@ nmm.app.SceneController = (function () {
     };
 
     p.gameCreated = function (data) {
-        console.log(data);
         this._gameView.update(data, this._model.game[data.level]);
     };
 

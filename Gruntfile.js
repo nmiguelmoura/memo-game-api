@@ -18,14 +18,18 @@ module.exports = function (grunt) {
                         'www/static/src/nmm/app/GameSelectionView.js',
                         'www/static/src/nmm/app/DifficultyView.js',
                         'www/static/src/nmm/app/MenuView.js',
+                        'www/static/src/nmm/app/NameInputView.js',
+                        'www/static/src/nmm/app/LogoView.js',
                         'www/static/src/nmm/app/Bg.js',
                         'www/static/src/nmm/app/ViewManager.js',
+                        'www/static/src/nmm/app/Logic.js',
                         'www/static/src/nmm/app/Model.js',
                         'www/static/src/nmm/app/SceneController.js',
                         'www/static/src/nmm/engine/AudioManager.js',
                         'www/static/src/nmm/engine/AssetsLoader.js',
                         'www/static/src/nmm/tools/Preloader.js',
                         'www/static/src/nmm/tools/Resize.js',
+                        'www/static/src/nmm/utils/utils.js',
                         'www/static/src/nmm/engine/Main.js'
                     ]
                 }

@@ -335,15 +335,6 @@ nmm.app.Model = (function () {
         if (result) {
             self._controller.movePosted(result);
         }
-
-        /*gapi.client.memo_game.move({
-         'web_safe_key': this.game.current.web_safe_key,
-         'move_one': move_one,
-         'move_two': move_two
-         }).execute(function (resp) {
-         console.log(resp);
-         self._controller.movePosted(resp);
-         });*/
     };
 
     // Create a new game.
