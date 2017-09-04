@@ -25,7 +25,7 @@ nmm.app.GameSelectionView = (function () {
     p.update = function (data) {
         // Update list with data passed.
         if (!data) {
-            this._infoText.setText('There are no games stored.');
+            this._infoText.setText('Não há jogos guardados.');
         } else {
             this._infoText.setText('');
 

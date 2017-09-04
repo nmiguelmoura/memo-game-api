@@ -92,6 +92,7 @@ nmm.app.GameView = (function () {
 
             pos = cardDistribution.disposal[i];
             card = this._pool.borrowFromPool();
+
             if (tile === "-1") {
                 card.reset();
                 card.btn.show();
@@ -132,6 +133,8 @@ nmm.app.GameView = (function () {
             length = history.length,
             h,
             delay;
+
+        this.disableAllCards();
 
         for (i = 0; i < length; i++) {
             h = history[i];
@@ -211,10 +214,10 @@ nmm.app.GameView = (function () {
             style.align = 'right';
             text = new PIXI.Text('', style);
             text.anchor.set(1, 0);
-            text.position.set(d.x + 177, d.y);
+            text.position.set(d.x + d.offset, d.y);
             stats.addChild(text);
 
-            this._values[d.text.toLowerCase()] = text;
+            this._values[d.name.toLowerCase()] = text;
         }
 
         this.addChild(stats);

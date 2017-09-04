@@ -68,7 +68,7 @@ nmm.app.Bg = (function(){
 
     p._addBgImage = function () {
         // Bg sprite.
-        var bg = new PIXI.Sprite(PIXI.Texture.fromImage('/assets/images/bg.jpg'));
+        var bg = new PIXI.Sprite(PIXI.Texture.fromImage('static/assets/images/bg.jpg'));
         this.addChild(bg);
     };
 

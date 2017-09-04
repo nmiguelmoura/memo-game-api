@@ -47,6 +47,24 @@ nmm.app.MenuView = (function () {
         }
     };
 
+    p.showMenu = function () {
+        this._btns.forEach(function (btn) {
+                btn.show();
+            }, this);
+    };
+
+    p.killLoader = function () {
+        if (this._loaderOn) {
+                nmm.runtime.appSetup.app.ticker.remove(this._loaderUpdateBound);
+                this.removeChild(this._loader);
+                this._loader.destroy({
+                    children: true,
+                    texture: true
+                });
+                this._loaderOn = false;
+            }
+    };
+
     p.checkStatus = function () {
         // Check if user is logged.
         var isUserLogged = this._controller.isUserLogged();
@@ -113,24 +131,6 @@ nmm.app.MenuView = (function () {
         this.addChild(this._optionsContainer);
     };
 
-    p._addLoginBtn = function () {
-        // Add login button.
-        this._loginBtn = new nmm.uiPIXI.TexturedBtn({
-            fillTexture: PIXI.Texture.fromFrame('btn-log'),
-            shadowTexture: PIXI.Texture.fromFrame('btn-log-shadow'),
-            x: 512,
-            y: 638,
-            scale: 1,
-            shadowOffsetX: -0.3,
-            shadowOffsetY: 2,
-            key: LOGIN,
-            autoHide: true,
-            callback: this._clickBound
-        });
-        this._loginBtn.hide();
-        this.addChild(this._loginBtn);
-    };
-
     p._addTitle = function () {
         // Add title.
         var title = new PIXI.Container();
@@ -140,7 +140,7 @@ nmm.app.MenuView = (function () {
         title.addChild(t0);
 
         var t1 = new PIXI.Sprite.fromFrame('title-1');
-        t1.position.set(404, 321);
+        t1.position.set(294, 321);
         title.addChild(t1);
 
         this.addChild(title);
@@ -166,7 +166,6 @@ nmm.app.MenuView = (function () {
 
         this._clickBound = this._click.bind(this);
         this._addLoader();
-        this._addLoginBtn();
         this._addOptions();
 
         this._loaderUpdateBound = this._loaderUpdate.bind(this);

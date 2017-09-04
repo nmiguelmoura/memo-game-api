@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jogo da memória</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,  user-scalable=no">
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <script>
+        var nmm = {};
+        nmm.app = {};
+        nmm.engine = {};
+        nmm.tools = {};
+        nmm.utils = {};
+        nmm.uiPIXI = {};
+        nmm.runtime = {};
+        nmm.runtime.dimensions = {};
+        nmm.runtime.appSetup = {};
+    </script>
+
+    <!--libs -->
+    <script src="static/src/libs/pixi_v4.min.js"></script>
+    <script src="static/src/libs/EasePack.min.js"></script>
+    <script src="static/src/libs/TweenLite.min.js"></script>
+    <script src="static/src/libs/soundjs-0.6.2.min.js"></script>
+    <!-- app code -->
+    <!--<script src="static/src/dist/memo.min.js"></script>-->
+    <script src="static/src/nmm/uiPIXI/TexturedBtn.js"></script>
+    <script src="static/src/nmm/app/Logic.js"></script>
+    <script src="static/src/nmm/app/ViewProto.js"></script>
+    <script src="static/src/nmm/app/audioSprite.js"></script>
+    <script src="static/src/nmm/app/Pool.js"></script>
+    <script src="static/src/nmm/app/ScoreView.js"></script>
+    <script src="static/src/nmm/app/Card.js"></script>
+    <script src="static/src/nmm/app/GameView.js"></script>
+    <script src="static/src/nmm/app/GameListElement.js"></script>
+    <script src="static/src/nmm/app/GameSelectionView.js"></script>
+    <script src="static/src/nmm/app/DifficultyView.js"></script>
+    <script src="static/src/nmm/app/MenuView.js"></script>
+    <script src="static/src/nmm/app/NameInputView.js"></script>
+    <script src="static/src/nmm/app/LogoView.js"></script>
+    <script src="static/src/nmm/app/Bg.js"></script>
+    <script src="static/src/nmm/app/ViewManager.js"></script>
+    <script src="static/src/nmm/app/Model.js"></script>
+    <script src="static/src/nmm/app/SceneController.js"></script>
+    <script src="static/src/nmm/utils/utils.js"></script>
+    <script src="static/src/nmm/engine/AudioManager.js"></script>
+    <script src="static/src/nmm/engine/AssetsLoader.js"></script>
+    <script src="static/src/nmm/tools/Preloader.js"></script>
+    <script src="static/src/nmm/tools/Resize.js"></script>
+    <script src="static/src/nmm/engine/Main.js"></script>
+    <script>
+        (function init () {
+            nmm.runtime.main = new nmm.engine.Application();
+        })();
+    </script>
+</body>
+</html>

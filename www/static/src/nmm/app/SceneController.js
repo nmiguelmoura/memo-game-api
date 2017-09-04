@@ -19,7 +19,7 @@ nmm.app.SceneController = (function () {
     p.scoreReady = function () {
         TweenLite.delayedCall(4, function () {
             this._viewManager.changeActiveView('menu');
-            this._menuView.checkStatus();
+            this._menuView.showMenu();
         }, [], this);
     };
 
@@ -52,12 +52,13 @@ nmm.app.SceneController = (function () {
     };
 
     p.gameDataLoaded = function (data) {
+        console.log(data);
         this._gameView.update(data, this._model.game[data.level]);
     };
 
     p.loadGame = function (web_safe_key) {
         this._model.loadGame(web_safe_key);
-        this._viewManager.changeActiveView('game')
+        this._viewManager.changeActiveView('game');
     };
 
     p.gameListReady = function (data) {
@@ -65,7 +66,7 @@ nmm.app.SceneController = (function () {
         if(!data.result.items) {
             TweenLite.delayedCall(2, function () {
                 this._viewManager.changeActiveView('menu');
-                this._menuView.checkStatus();
+                this._menuView.showMenu();
             }, [], this);
         }
     };
@@ -86,7 +87,6 @@ nmm.app.SceneController = (function () {
     };
 
     p.movePosted = function (data) {
-        console.log(data.result);
         // Update card.
         if (data.move_two_key === "-1") {
             // Only one card turned.
@@ -94,6 +94,7 @@ nmm.app.SceneController = (function () {
         } else {
             // Two cards turned.
             this._gameView.turnCard(1, parseInt(data.move_two_key));
+            console.log(this._model.game.current.move_record);
             this._gameView.updateValues(data.score, this._model.game.current.move_record.length / 2);
 
             // Check if guessed.
@@ -132,6 +133,7 @@ nmm.app.SceneController = (function () {
     };
 
     p.gameCreated = function (data) {
+        console.log(data);
         this._gameView.update(data, this._model.game[data.level]);
     };
 
@@ -143,21 +145,28 @@ nmm.app.SceneController = (function () {
     p.allowDifficultySelect = function () {
         this._viewManager.changeActiveView('difficulty');
     };
-
-    p.loginSuccessfull = function () {
-        this._menuView.checkStatus();
+    
+    p.startMenu = function () {
+        this._menuView.killLoader();
+        this._menuView.showMenu();
     };
 
-    p.attemptLogin = function () {
-        this._model.auth();
+    p.nameReady = function () {
+        this._model.storePlayerName();
+        this._viewManager.changeActiveView('menu');
+        this.startMenu();
     };
 
-    p.apiReady = function () {
-        this._menuView.checkStatus();
+    p.keyboardClicked = function (point) {
+        this._nameInputView.updateName(this._model.keyboardClicked(point));
     };
 
-    p.isUserLogged = function () {
-        return this._model.isUserLogged;
+    p.getPlayerName = function () {
+        return this._model.getPlayerName();
+    };
+
+    p.startNameInputView = function () {
+        this._viewManager.changeActiveView('nameInput');
     };
 
     p.getInfo = function (viewName) {
@@ -168,8 +177,14 @@ nmm.app.SceneController = (function () {
         // Register all views.
         this._viewManager = new nmm.app.ViewManager(this);
 
+        this._logoView = new nmm.app.LogoView(this, 'logo', this._model.logo);
+        this._viewManager.registerView(this._logoView, true);
+
+        this._nameInputView = new nmm.app.NameInputView(this, 'nameInput', this._model.nameInput);
+        this._viewManager.registerView(this._nameInputView);
+
         this._menuView = new nmm.app.MenuView(this, 'menu');
-        this._viewManager.registerView(this._menuView, true);
+        this._viewManager.registerView(this._menuView);
 
         this._difficultyView = new nmm.app.DifficultyView(this, 'difficulty');
         this._viewManager.registerView(this._difficultyView);
@@ -193,9 +208,6 @@ nmm.app.SceneController = (function () {
         var bg = new nmm.app.Bg(this._pool, this._model.bg, this._model.game.numTotalCards);
         this.addChild(bg);
         this._registerViews();
-
-        // Setup Google API.
-        this._model.setupGoogleAPI();
 
         // Play bg music.
         nmm.runtime.audio.playBgSound('audioSprite', 'music');

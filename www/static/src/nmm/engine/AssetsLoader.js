@@ -7,12 +7,12 @@ nmm.engine.AssetsLoader = (function () {
     'use strict';
 
     var self,
-        BG = '/assets/images/bg.jpg',
+        BG = 'static/assets/images/bg.jpg',
         SPRITESHEETS = {
-            ss1: ['/assets/images/atlas00@1x.json'],
-            ss2: ['assets/images/atlas00@2x.json', 'assets/images/atlas01@2x.json']
+            ss1: ['static/assets/images/atlas00@1x.json'],
+            ss2: ['static/assets/images/atlas00@2x.json', 'assets/images/atlas01@2x.json']
         },
-        AUDIOSPRITE = 'assets/sounds/audioSprite.mp3';
+        AUDIOSPRITE = 'static/assets/sounds/audioSprite.mp3';
 
     function AssetsLoader(callback) {
         self = this;

@@ -1,8 +1,40 @@
 {"frames": {
 
+"card-2":
+{
+	"frame": {"x":2,"y":291,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
+"card-3":
+{
+	"frame": {"x":2,"y":842,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
+"card-4":
+{
+	"frame": {"x":411,"y":291,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
+"card-5":
+{
+	"frame": {"x":2,"y":1393,"w":406,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
+	"sourceSize": {"w":408,"h":550}
+},
 "card-6":
 {
-	"frame": {"x":2,"y":2,"w":406,"h":548},
+	"frame": {"x":411,"y":842,"w":406,"h":548},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
@@ -10,7 +42,7 @@
 },
 "card-7":
 {
-	"frame": {"x":411,"y":2,"w":406,"h":548},
+	"frame": {"x":820,"y":291,"w":406,"h":548},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
@@ -18,7 +50,7 @@
 },
 "card-8":
 {
-	"frame": {"x":820,"y":2,"w":406,"h":548},
+	"frame": {"x":411,"y":1393,"w":406,"h":548},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
@@ -26,7 +58,7 @@
 },
 "card-9":
 {
-	"frame": {"x":1229,"y":2,"w":406,"h":548},
+	"frame": {"x":820,"y":842,"w":406,"h":548},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
@@ -34,19 +66,27 @@
 },
 "card-secret":
 {
-	"frame": {"x":1638,"y":2,"w":406,"h":548},
+	"frame": {"x":820,"y":1393,"w":406,"h":548},
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":1,"y":1,"w":406,"h":548},
 	"sourceSize": {"w":408,"h":550}
+},
+"title-1":
+{
+	"frame": {"x":2,"y":2,"w":1330,"h":286},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":0,"w":1330,"h":286},
+	"sourceSize": {"w":1342,"h":298}
 }},
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
 	"image": "atlas01@2x.png",
 	"format": "RGBA8888",
-	"size": {"w":2046,"h":552},
+	"size": {"w":1334,"h":1943},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ac5423aaae6c4747475c61df5d761307:84262487ce2ceab5d89f7537bbbbb485:8d03dcacf632cfc59c2d4640d470e873$"
+	"smartupdate": "$TexturePacker:SmartUpdate:dfbf526761391fdd84581b77dfef761f:5bdb432e26b394c9120ff17b7e4dc5db:8d03dcacf632cfc59c2d4640d470e873$"
 }
 }

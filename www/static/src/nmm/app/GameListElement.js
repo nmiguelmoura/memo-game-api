@@ -29,7 +29,7 @@ nmm.app.GameListElement = (function(){
 
     p.update = function (data, i) {
         // Update element.
-        this._mainText.setText('Game ' + i);
+        this._mainText.setText('Jogo ' + i);
         this._valueTexts[0].setText(data.score);
         this._valueTexts[0].setText(data.score);
 

@@ -1,16 +1,19 @@
 nmm.app.Model = (function () {
     'use strict';
 
-    var CLIENT_ID = '111248907577-db9pioih0u8s8e9u626r0i8cf2lk7kr9.apps.googleusercontent.com';
-    var SCOPES = 'https://www.googleapis.com/auth/userinfo.email';
-    var self;
+    var self,
+        MAX_NAME_LENGTH = 15,
+        tempName = '';
 
     function Model(controller) {
         self = this;
         this._controller = controller;
+        this._logic = new nmm.app.Logic();
         this.isUserLogged = false;
 
         this.poolMaxElements = 48;
+
+        this.playerName = null;
 
         this.bg = {
             numLines: 5,
@@ -24,25 +27,97 @@ nmm.app.Model = (function () {
             ]
         };
 
+        this.logo = {
+            image: {
+                frame: 'logo-cdc',
+                x: 512,
+                y: 315
+            },
+            texts: [
+                {
+                    text: 'Casa das Ciências',
+                    fontSize: '116px',
+                    x: 512,
+                    y: 560,
+                    anchor: 0.5,
+                    scale: 0.5
+                },
+                {
+                    text: 'RECURSOS EDUCATIVOS PARA PROFESSORES',
+                    fontSize: '40px',
+                    x: 512,
+                    y: 625,
+                    anchor: 0.5,
+                    scale: 0.5
+                }
+            ]
+        };
+
+        this.nameInput = {
+            title: {
+                fontSize: '112px',
+                text: 'Como te chamas?',
+                anchor: 0.5,
+                scale: 0.5,
+                x: 512,
+                y: 142
+            },
+            rectangle: {
+                x: 173,
+                y: 216,
+                width: 680,
+                height: 72,
+                borderColor: 0xDD5C5C,
+                fillColor: 0xFFFFFF,
+                fillAlpha: 0.1,
+                stroke: 2
+            },
+            nameText: {
+                fontSize: '80px',
+                fontStyle: 'italic',
+                x: 186,
+                y: 230,
+                scale: 0.5
+            },
+            keyboard: {
+                frame: 'keyboard',
+                anchor: 0.5,
+                x: 512,
+                y: 469,
+                width: 680,
+                height: 273
+            },
+            btn: {
+                text: 'Continuar',
+                fontSize: '40px',
+                anchor: 0.5,
+                scale: 0.5,
+                x: 512,
+                y: 652,
+                width: 100,
+                height: 60
+            }
+        };
+
         this.menu = {
             btns: [
                 {
                     x: 512,
                     y: 582,
                     key: 1,
-                    text: 'New Game'
+                    text: 'Novo jogo'
                 },
                 {
                     x: 264,
                     y: 689,
                     key: 2,
-                    text: 'Load Game'
+                    text: 'Abrir jogo'
                 },
                 {
                     x: 772,
                     y: 689,
                     key: 3,
-                    text: 'View History'
+                    text: 'Ver histórico'
                 }
             ]
 
@@ -54,19 +129,19 @@ nmm.app.Model = (function () {
                     x: 512,
                     y: 220,
                     key: 0,
-                    text: 'Easy'
+                    text: 'Fácil'
                 },
                 {
                     x: 512,
                     y: 384,
                     key: 1,
-                    text: 'Medium'
+                    text: 'Médio'
                 },
                 {
                     x: 512,
                     y: 547,
                     key: 2,
-                    text: 'Hard'
+                    text: 'Difícil'
                 }
             ],
             selected: null
@@ -76,7 +151,7 @@ nmm.app.Model = (function () {
             listMaxLength: 5,
             info: [
                 {
-                    text: 'Score:',
+                    text: 'Pontos:',
                     x: 680,
                     y: 50
                 }
@@ -144,14 +219,18 @@ nmm.app.Model = (function () {
             },
             info: [
                 {
-                    text: 'Score',
+                    name: 'score',
+                    text: 'Pontos',
                     x: 40,
-                    y: 26
+                    y: 26,
+                    offset: 177
                 },
                 {
-                    text: 'Moves',
-                    x: 800,
-                    y: 26
+                    name: 'moves',
+                    text: 'Jogadas',
+                    x: 780,
+                    y: 26,
+                    offset: 200
                 }
             ],
             current: {}
@@ -161,19 +240,33 @@ nmm.app.Model = (function () {
             info: {
                 width: 405,
                 column0: {
-                    title: 'Top Score',
+                    title: 'Pontuação',
                     subTitle: 'pts.',
                     x: 57,
                     y: 57
                 },
                 column1: {
-                    title: 'Player Ranking',
-                    subTitle: '% guesses',
+                    title: 'Ranking',
+                    subTitle: '% certas',
                     x: 562,
                     y: 57
                 }
             }
+        };
 
+        this._keyboardGrid = {
+            originX: 174,
+            originY: 334,
+            lines: 4,
+            columns: 10,
+            width: 68,
+            height: 68,
+            order: [
+                ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+                ['K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
+                ['U', 'V', 'W', 'X', 'Y', 'Z', 'SPACE', 'SPACE', 'SPACE', 'DELETE']
+            ]
         };
     }
 
@@ -181,74 +274,43 @@ nmm.app.Model = (function () {
 
     // Get rankings.
     p.getRankings = function () {
-        gapi.client.memo_game.get_user_ranking()
-            .execute(function (resp) {
-                console.log(resp);
-                self._controller.rankingLoaded(resp);
-            });
+        this._controller.rankingLoaded(this._logic.rankings());
     };
 
     // Get top score.
     p.getTopScore = function () {
-        gapi.client.memo_game.get_high_scores({
-            'list_length': 15
-        }).execute(function (resp) {
-            console.log(resp);
-            self._controller.scoreLoaded(resp);
-        });
+        this._controller.scoreLoaded(this._logic.score());
     };
 
     // Get game history.
     p.getGameHistory = function (web_safe_key) {
-        gapi.client.memo_game.get_game_history({
-            'web_safe_key': web_safe_key
-        }).execute(function (resp) {
-            console.log(resp);
-            var level = resp.result.level;
-            var score = resp.result.score;
-            var json = atob(resp.result.history);
-            var history = JSON.parse(json);
-            self._controller.gameHistoryLoaded(level, score, history);
-        });
+        var result = this._logic.history(web_safe_key);
+        if (result) {
+            self._controller.gameHistoryLoaded(result.level, result.score, result.history);
+        }
     };
 
     // Delete game.
     p.deleteGame = function (web_safe_key) {
-        gapi.client.memo_game.cancel_game({
-            'web_safe_key': web_safe_key
-        }).execute(function (resp) {
-            console.log(resp);
-            self.getUnfinishedGames();
-        });
+        this._logic.cancel(web_safe_key);
+        this.getUnfinishedGames();
     };
 
     // Load game.
     p.loadGame = function (web_safe_key) {
-        gapi.client.memo_game.get_game({
-            'web_safe_key': web_safe_key
-        }).execute(function (resp) {
-            console.log(resp);
-            self.game.current = resp.result;
-            self._controller.gameDataLoaded(resp);
-        });
+        var result = this._logic.get_existing_game(web_safe_key);
+        this.game.current = result;
+        this._controller.gameDataLoaded(result);
     };
 
     // Get finished games.
     p.getFinishedGames = function () {
-        gapi.client.memo_game.get_user_complete_games()
-            .execute(function (resp) {
-                console.log(resp);
-                self._controller.gameListReady(resp);
-            });
+        this._controller.gameListReady(this._logic.get_games_list(true));
     };
 
     // Get unfinished games.
     p.getUnfinishedGames = function () {
-        gapi.client.memo_game.get_user_games()
-            .execute(function (resp) {
-                console.log(resp);
-                self._controller.gameListReady(resp);
-            });
+        this._controller.gameListReady(this._logic.get_games_list(false));
     };
 
     // Make a move.
@@ -267,81 +329,81 @@ nmm.app.Model = (function () {
             move_two = cardsTurned[1];
             this.updateMoveRecord(move_one, move_two);
         }
-        gapi.client.memo_game.move({
-            'web_safe_key': this.game.current.web_safe_key,
-            'move_one': move_one,
-            'move_two': move_two
-        }).execute(function (resp) {
-            console.log(resp);
-            self._controller.movePosted(resp);
-        });
+
+        var result = this._logic.make_move(move_one, move_two, this.game.current);
+
+        if (result) {
+            self._controller.movePosted(result);
+        }
+
+        /*gapi.client.memo_game.move({
+         'web_safe_key': this.game.current.web_safe_key,
+         'move_one': move_one,
+         'move_two': move_two
+         }).execute(function (resp) {
+         console.log(resp);
+         self._controller.movePosted(resp);
+         });*/
     };
 
     // Create a new game.
     p.createGame = function (level) {
         var levels = ['easy', 'medium', 'hard'];
         level = levels[level];
-        gapi.client.memo_game.create_game({
-            'level': level
-        }).execute(function (resp) {
-            console.log(resp);
-            self.game.current = resp.result;
-            self._controller.gameCreated(self.game.current);
-        });
+
+        self.game.current = this._logic.create_game(level, this._playerName);
+        self._controller.gameCreated(self.game.current);
     };
 
-    // Oauth2.
-    p.retrieveProfileCallback = function () {
-        // Store user profile in datastore.
-        gapi.client.memo_game.create_user().execute(function (resp) {
-                console.log(resp);
-                self._controller.loginSuccessfull();
-            }
-        );
+    p.keyboardClicked = function (point) {
+        var x = point.x - this._keyboardGrid.originX,
+            y = point.y - this._keyboardGrid.originY,
+            line = Math.floor(y / this._keyboardGrid.height),
+            column = Math.floor(x / this._keyboardGrid.width),
+            key = this._keyboardGrid.order[line][column];
+
+        switch (key) {
+            case 'SPACE':
+                if (tempName.length < MAX_NAME_LENGTH) {
+                    if (tempName !== '') {
+                        tempName += ' ';
+                    }
+                }
+                break;
+
+            case 'DELETE':
+                tempName = tempName.substring(0, tempName.length - 1);
+                break;
+
+            default:
+                if (tempName.length < MAX_NAME_LENGTH) {
+                    tempName += key;
+                }
+                break;
+
+        }
+
+        return tempName;
     };
 
-    p.userAuthed = function () {
-        // Get user info.
-        var request = gapi.client.oauth2.userinfo.get().execute(function (resp) {
-            if (!resp.code) {
-                self.isUserLogged = true;
-                self.retrieveProfileCallback(self);
-            }
-        });
-    };
-
-    p.signin = function (mode, callback) {
-        // Sign in user.
-        gapi.auth.authorize({
-                client_id: CLIENT_ID,
-                scope: SCOPES, immediate: mode
-            },
-            callback);
-    };
-
-    p.auth = function () {
-        // Start authorization process
-        if (!this.isUserLogged) {
-            this.signin(false, this.userAuthed.bind(self));
+    p.storePlayerName = function () {
+        if (tempName !== '') {
+            this._playerName = tempName;
         } else {
-            this.isUserLogged = false;
+            this._playerName = 'JOGADOR 1'
         }
+        localStorage.setItem('playerName', this._playerName);
     };
 
-    p.setupGoogleAPI = function () {
-        var apiRoot = '//' + window.location.host + '/_ah/api',
-            apisToLoad = 2,
-            apisLoaded = 0; // must match number of calls to gapi.client.load();
-
-        function callback() {
-            apisLoaded++;
-            if (apisLoaded === apisToLoad) {
-                self._controller.apiReady();
-            }
+    p.getPlayerName = function () {
+        var playerName = localStorage.getItem('playerName');
+        console.log(playerName);
+        if (playerName) {
+            tempName = playerName;
+            return playerName;
         }
 
-        gapi.client.load('memo_game', 'v1', callback, apiRoot);
-        gapi.client.load('oauth2', 'v2', callback);
+        return null;
     };
 
     return Model;
