@@ -44,6 +44,10 @@ nmm.engine.Application = (function () {
         // PIXI setup.
 
         var resolution = window.devicePixelRatio;
+
+        // Devices were pixel ratio are bigger than 2, make it two.
+        resolution = resolution <= 2 ? resolution : 2;
+
         var app = new PIXI.Application(WIDTH, HEIGHT, {
             resolution: window.devicePixelRatio,
             autoResize: true,

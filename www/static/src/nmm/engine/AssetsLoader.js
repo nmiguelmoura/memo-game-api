@@ -10,7 +10,7 @@ nmm.engine.AssetsLoader = (function () {
         BG = 'static/assets/images/bg.jpg',
         SPRITESHEETS = {
             ss1: ['static/assets/images/atlas00@1x.json'],
-            ss2: ['static/assets/images/atlas00@2x.json', 'assets/images/atlas01@2x.json']
+            ss2: ['static/assets/images/atlas00@2x.json', 'static/assets/images/atlas01@2x.json']
         },
         AUDIOSPRITE = 'static/assets/sounds/audioSprite.mp3';
 
@@ -37,7 +37,7 @@ nmm.engine.AssetsLoader = (function () {
         this._loader = PIXI.loader;
         nmm.runtime.appSetup.loader = this._loader;
 
-        SPRITESHEETS['ss' + nmm.runtime.dimensions.resolution].forEach(function (sprite) {
+        SPRITESHEETS['ss' + Math.floor(nmm.runtime.dimensions.resolution)].forEach(function (sprite) {
             self._loader.add(sprite);
         });
 
